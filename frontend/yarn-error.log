@@ -1,0 +1,62 @@
+Arguments: 
+  /home/pk/.nvm/versions/node/v19.6.1/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /home/pk/.bun/bin:/home/pk/.autojump/bin:/home/pk/.local/share/pnpm:/home/pk/.bun/bin:/home/pk/.nvm/versions/node/v19.6.1/bin:/home/pk/.autojump/bin:/home/pk/.cargo/bin:/home/pk/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/local/go/bin:/home/pk/Android/Sdk/tools:/home/pk/Android/Sdk/emulator:/home/pk/Android/Sdk/platform-tools:/home/pk/Android/Sdk/tools:/home/pk/Android/Sdk/emulator:/home/pk/Android/Sdk/platform-tools
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  19.6.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/home/pk/.cache/yarn/v6/npm-bs58-5.0.0-865575b4d13c09ea2a84622df6c8cbeb54ffc279-integrity/node_modules/bs58/CHANGELOG.md' -> '/home/pk/Dev/proVault/frontend/node_modules/@thirdweb-dev/sdk/node_modules/bs58/CHANGELOG.md'
+
+npm manifest: 
+  {
+    "name": "provault-fe",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+      "preview": "vite preview"
+    },
+    "dependencies": {
+      "@firebase/firestore": "^4.3.0",
+      "@nextui-org/react": "^2.1.13",
+      "@thirdweb-dev/react": "^4.0.8",
+      "@thirdweb-dev/sdk": "^4.0.7",
+      "ethers": "^5.7.2",
+      "firebase": "^10.5.0",
+      "framer-motion": "^10.16.4",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-firebase-hooks": "^5.1.1",
+      "react-router": "^6.17.0",
+      "react-router-dom": "^6.17.0"
+    },
+    "devDependencies": {
+      "@types/react": "^18.2.15",
+      "@types/react-dom": "^18.2.7",
+      "@vitejs/plugin-react": "^4.0.3",
+      "eslint": "^8.45.0",
+      "eslint-plugin-react": "^7.32.2",
+      "eslint-plugin-react-hooks": "^4.6.0",
+      "eslint-plugin-react-refresh": "^0.4.3",
+      "tailwindcss": "^3.3.5",
+      "vite": "^4.4.5"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
