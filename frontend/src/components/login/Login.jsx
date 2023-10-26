@@ -6,25 +6,17 @@ import {
     walletConnect,
     localWallet,
     embeddedWallet,
+    useAddress,
   } from "@thirdweb-dev/react";
   
   export default function Login() {
+    const address = useAddress();
+    console.log(address);
     return (
-      <ThirdwebProvider
-        activeChain="mumbai"
-        clientId="YOUR_CLIENT_ID"
-        supportedWallets={[
-          metamaskWallet(),
-          coinbaseWallet({ recommended: true }),
-          walletConnect(),
-          localWallet(),
-          embeddedWallet(),
-        ]}
-      >
         <ConnectWallet
           theme={"dark"}
           modalSize={"wide"}
         />
-      </ThirdwebProvider>
+      
     );
   }
