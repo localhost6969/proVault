@@ -1,6 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-gas-reporter")
 require("./tasks/block-number")
+require("@nomicfoundation/hardhat-verify");
 require("dotenv").config()
 
 const XDC_RPC_URL1 = process.env.XDC_RPC_URL1
@@ -8,6 +9,7 @@ const XDC_RPC_URL2 = process.env.XDC_RPC_URL2
 const XDC_RPC_URL3 = process.env.XDC_RPC_URL3
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const MATIC_RPC_URL = process.env.MATIC_RPC_URL
+const POLYGON_KEY = process.env.POLYGON_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -24,20 +26,28 @@ module.exports = {
     matic: {
       url:  MATIC_RPC_URL,
       accounts: [PRIVATE_KEY],
-      chainId: 80001
-    }
+      chainId: 80001,
+    },
+    running: {
+      url: "http://localhost:8545",
+      chainId: 1337,
+    },
+    hardhat: {
+      chainId: 1337,
+    },
+
   },
   solidity: {
     version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200
+        runs: 1000
       }
     }
   },
   etherscan : {
-    apiKey : process.env.POLYGON_KEY
+    apiKey : POLYGON_KEY
   },
   paths: {
     sources: "./contracts",
