@@ -15,7 +15,9 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks:{
     xdc: {
-      url: XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1,
+      url: "http://erpc.apothem.network/",
+      // "http://xdc-apothem-network.rpc.thirdweb.com/c3bd26c426ad51a037777501a50767c5/",
+      //  || XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1 ,
       accounts: [PRIVATE_KEY],
       chainId: 51
     },
@@ -33,6 +35,9 @@ module.exports = {
         runs: 200
       }
     }
+  },
+  etherscan : {
+    apiKey : process.env.POLYGON_KEY
   },
   paths: {
     sources: "./contracts",

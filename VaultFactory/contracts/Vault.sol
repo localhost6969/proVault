@@ -40,6 +40,7 @@ contract Vault is AccessControl{
     uint256[] public chainId;
 
     address[] public fundAddress;
+
     mapping (address => uint256) public fundToSend; // fundAddress => amount to be sent
 
     mapping (uint256 => address[]) public assetOfChainId; // chain Id => assetAddress
@@ -143,10 +144,26 @@ contract Vault is AccessControl{
         emit paymentReceived(msg.sender, address(0), msg.value);
     }
 
+    function deposit() public payable onlyRole(FUND_ROLE) onlyRole(ADMIN_ROLE){
+
+    }
+
     function withdraw() public onlyRole(FUND_ROLE) onlyRole(SPECIAL_ROLE){
         for(uint i = 0; i < fundAddress.length; i++){
             address addressAddr = fundAddress[i];
             payable(addressAddr).transfer(fundToSend[addressAddr]);
         }
+    }
+
+    function getChainIdLength() public view returns(uint256){
+        return chainId.length;
+    }
+
+    function getAssetAddressLength() public view returns(uint256){
+        return assetAddress.length;
+    }
+
+    function getFundAddressLength() public view returns(uint256){
+        return fundAddress.length;
     }
 }
