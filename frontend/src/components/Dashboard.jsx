@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 import NavBar from "./Navbar";
 import { useAddress } from "@thirdweb-dev/react";
+import { createVault } from "../utils/createVault";
 
 const Dashboard = () => {
 	const createVault = () => {
+		
 		setCreatedVault(true);
 	};
 

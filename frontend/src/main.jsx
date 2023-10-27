@@ -14,14 +14,15 @@ import {
   embeddedWallet,
   useAddress,
 } from "@thirdweb-dev/react";
+import { XinfinXdcNetwork, XdcApothemNetwork, Mumbai, Localhost} from "@thirdweb-dev/chains";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
       <BrowserRouter>
       <NextUIProvider>
       <ThirdwebProvider
-        activeChain="mumbai"
-        clientId="YOUR_CLIENT_ID"
+        activeChain={Localhost}
+        clientId="c3bd26c426ad51a037777501a50767c5"
         supportedWallets={[
           metamaskWallet(),
           coinbaseWallet({ recommended: true }),

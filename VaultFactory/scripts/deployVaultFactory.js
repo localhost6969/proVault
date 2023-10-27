@@ -11,7 +11,7 @@ async function main() {
     const public_key = process.env.PUBLIC_KEY
     const currentTimestampInSeconds = Math.round(Date.now() / 1000);
     const unlockTime = currentTimestampInSeconds + 60;
-
+    const args = [];
     const lockedAmount = ethers.parseEther("0.001");
 
     const [owner] = await ethers.getSigners()
@@ -28,7 +28,25 @@ async function main() {
       lockedAmount
     )}ETH and unlock timestamp ${unlockTime} deployed to ${vaultFactory.target}`
   );
+  console.log(vaultFactory.target)
+  // await verify(vaultFactory.target, args);
 }
+
+const verify = async (contractAddress, args) => {
+  console.log("Verifying contract...");
+  try {
+      await run("verify:verify", {
+          address: contractAddress,
+          constructorArguments: args,
+      });
+  } catch (e) {
+      if (e.message.toLowerCase().includes("already verified")) {
+          console.log("Already verified!");
+      } else {
+          console.log(e);
+      }
+  }
+};
 
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
