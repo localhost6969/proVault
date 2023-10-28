@@ -38,11 +38,15 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
     }
 
     modifier isExpired(address vault){
-        if(infoOfVault[vault].endTime<=block.timestamp){
+        if(infoOfVault[vault].endTime>=block.timestamp){
             burnSubscription(vault);
         } else{
             _;
         }
+    }
+
+    function getSubscriberEndTimeInfo(address vault) public view returns(uint256){
+        return infoOfVault[vault].endTime;
     }
 
     function mintSubscription(address _toVault) public payable{
@@ -58,7 +62,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
         infoOfVault[_toVault] = subscriptionInfo(msg.sender, tokenId, 0, block.timestamp, block.timestamp+30 days);
     }
 
-    function burnSubscription(address _vault) internal{
+    function burnSubscription(address _vault) public {
         for (uint i = 0; i < subscriptionHolders.length; i++){
             if(subscriptionHolders[i]==_vault){
                 delete subscriptionHolders[i];

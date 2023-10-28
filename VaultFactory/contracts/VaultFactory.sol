@@ -27,9 +27,9 @@ contract VaultFactory is Ownable, Pausable{
 
     }
 
-    function createVault(address _admin, address _fund, address _dev, address _special, string memory _name) public{
+    function createVault(address _admin, address _fund, address _dev, address _special, address _subscription, string memory _name) public{
 
-        Vault _vault = new Vault(_admin, _fund, _dev, _special);
+        Vault _vault = new Vault(_admin, _fund, _dev, _special, _subscription);
         address _vaultAddr = address(_vault);
 
         vaults.push(_vaultAddr);
@@ -43,7 +43,7 @@ contract VaultFactory is Ownable, Pausable{
         AdminToVaultAddress[_admin] = _vaultAddr;
         FunderToVaultAddress[_fund] = _vaultAddr;
         DeveloperToVaultAddress[_dev] = _vaultAddr;
-        
+
         vaultCount +=1;
     }
 
