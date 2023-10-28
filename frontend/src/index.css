@@ -18,6 +18,11 @@
 	-webkit-text-size-adjust: 100%;
 }
 
+.login-page {
+	background: url("https://images.squarespace-cdn.com/content/59413d96e6f2e1c6837c7ecd/1618090052361-1IBZLO9HBURW55WS45EF/A+sample+of+the+highest+selling+NFTs+on+the+SuperRare+marketplace?format=1500w&content-type=image%2Fpng")
+		center/cover;
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
