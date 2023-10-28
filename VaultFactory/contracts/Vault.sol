@@ -35,6 +35,7 @@ contract Vault is AccessControl{
     bytes32 public constant EXECUTOR_ROLE = keccak256("EXECUTOR_ROLE");
 
     uint256 public totalAmountToSpend;
+    bool public isAutomation;
 
     address[] public assetAddress;
     uint256[] public chainId;
@@ -56,12 +57,25 @@ contract Vault is AccessControl{
         _;
     }
 
-    constructor(address _adminAddress, address _fundAddress, address _devAddress, address _special) isZero(_adminAddress) {
+    Subscription public subscription;
+
+    constructor(address _adminAddress, address _fundAddress, address _devAddress, address _special, address _subscription) isZero(_adminAddress) {
         // Set the contract creator as the admin
         _grantRole(ADMIN_ROLE, _adminAddress);
         _grantRole(FUND_ROLE, _fundAddress);
         _grantRole(DEV_ROLE, _devAddress); 
         _grantRole(SPECIAL_ROLE, _special);
+        
+        subscription = Subscription(_subscription);
+    }
+
+    function automation() public {
+        
+        if (subscription.getSubscriberEndTimeInfo(address(this)) >= block.timestamp) {
+            subscription.burnSubscription(address(this));
+            isAutomation = false;
+        }
+        isAutomation = true;
     }
 
     function addFundAddress(address _fundAddress, uint256 _fundToBeSent) public onlyRole(ADMIN_ROLE) isZero(_fundAddress) {
