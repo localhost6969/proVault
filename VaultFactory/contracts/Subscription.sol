@@ -26,6 +26,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
 
     uint buyPrice = 10 ether;
     uint royaltyPercentage = 10;
+    uint subscriptionTime = 10 * 60;
 
     address[] public subscriptionHolders;
     address[] public subscriptionSellers;
@@ -59,7 +60,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
 
         subscriptionHolders.push(_toVault); 
 
-        infoOfVault[_toVault] = subscriptionInfo(msg.sender, tokenId, 0, block.timestamp, block.timestamp+30 days);
+        infoOfVault[_toVault] = subscriptionInfo(msg.sender, tokenId, 0, block.timestamp, block.timestamp+subscriptionTime);
     }
 
     function burnSubscription(address _vault) public {
