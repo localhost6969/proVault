@@ -35,6 +35,11 @@ export default function NavBar() {
 						Dashboard
 					</Link>
 				</NavbarItem>
+				<NavbarItem>
+					<Link color='foreground' to='/automate'>
+						Automate
+					</Link>
+				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify='end'>
 				{address ? (

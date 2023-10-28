@@ -52,9 +52,21 @@ const Dashboard = () => {
 				<NavBar />
 				<div className='flex items-center p-10 ml-40'>
 					{vault ? (
-						<p>
-							Address : {vault.vaultAddress} : Role {vault.role}
-						</p>
+						<>
+							{/* <p>
+								Address : {vault.vaultAddress} : Role {vault.role}
+							</p> */}
+							<Card className='relative bg-secondary-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md m-5 h-50 w-50 flex flex-col'>
+								<div className='flex items-center mb-4'>
+									<PiVaultFill className='text-4xl text-gray-100 mr-4' />
+									<h2 className='text-2xl font-bold text-white'>
+										{vault.role}
+									</h2>
+								</div>
+								{/* <p className='text-gray-400'>Vault Address</p> */}
+								<p className='text-gray-300'>{vault.vaultAddress}</p>
+							</Card>
+						</>
 					) : (
 						<Button
 							as={Link}

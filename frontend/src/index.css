@@ -25,7 +25,8 @@
 
 .dashboard-page,
 .createvault-page,
-.home-page {
+.home-page,
+.automate-page {
 	background: url("./assets/blob-scene-haikei.svg") center/cover;
 }
 
