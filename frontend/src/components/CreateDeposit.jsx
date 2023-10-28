@@ -1,4 +1,4 @@
-import { Button, Input, button } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { IoArrowBack } from "react-icons/io5";
 import { Link, Navigate } from "react-router-dom";
 import {
@@ -18,6 +18,7 @@ const CreateDeposit = () => {
 	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const [vaultAddress, setVautAddress] = useState();
 	const [loading, setLoading] = useState(true);
+	const [loadingTransaction, setLoadingTransaction] = useState(false);
 	const [depositAmount, setDeposit] = useState(0.0);
 	const address = useAddress();
 	const sdk = useSDK();
@@ -71,12 +72,18 @@ const CreateDeposit = () => {
 										defaultValue='0.0'
 									/>
 								</div>
-								<div className='mt-4'>
-									<TransactionButton
-										vaultAddress={vaultAddress}
-										amount={depositAmount}
-									/>
-								</div>
+								{loadingTransaction ? (
+									<Spinner color='success' size='lg' className='mt-3' />
+								) : (
+									<div className='mt-4'>
+										<TransactionButton
+											setLoadingTransaction={setLoadingTransaction}
+											loadingTransaction={loadingTransaction}
+											vaultAddress={vaultAddress}
+											amount={depositAmount}
+										/>
+									</div>
+								)}
 							</div>
 						)}
 						{/* <Button
@@ -98,9 +105,20 @@ const CreateDeposit = () => {
 
 function TransactionButton(props) {
 	const sdk = useSDK();
-	const initiateTransfer = async () => {
-		const result = await sdk.wallet.transfer(props.vaultAddress, props.amount);
-		console.log(result);
+	const initiateTransfer = () => {
+		props.setLoadingTransaction(true);
+		const result = sdk.wallet
+			.transfer(props.vaultAddress, props.amount)
+			.then(res => {
+				alert("Deposit successful");
+				console.log(result);
+			})
+			.catch(err => {
+				console.log(err);
+			})
+			.finally(() => {
+				props.setLoadingTransaction(false);
+			});
 	};
 	console.log(props.vaultAddress);
 	return (

@@ -10,6 +10,7 @@ import CreateVault from "./components/CreateVault";
 import CreateDeposit from "./components/CreateDeposit";
 import Automate from "./components/Automate";
 import DisplayVaults from "./components/DisplayVaults";
+import NFTStore from "./components/NFTStore";
 import Protected from "./components/Protected";
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
 					}
 				/>
 				<Route path='/vaults' element={<DisplayVaults />} />
+				<Route path='/store' element={<NFTStore />} />
 			</Routes>
 		</div>
 	);
