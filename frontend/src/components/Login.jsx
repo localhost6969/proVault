@@ -21,6 +21,7 @@ export default function Login() {
 	useEffect(() => {
 		if (address !== undefined) {
 			setNavigate(true);
+			localStorage.setItem("user_address", address);
 		}
 	}, [address]);
 
@@ -46,8 +47,9 @@ export default function Login() {
 					<div className='flex items-center justify-center flex-1 bg-opacity-70 backdrop-filter backdrop-blur-md bg-secondary-400 rounded-r-xl'>
 						<div className='w-96'>
 							<div className='flex'>
-								<h1 className='mb-5 text-5xl'>ProVault</h1>
-								<SiVaultwarden className='text-6xl text-white ml-3' />
+								<h1 className='mb-5 text-5xl'>Pro</h1>
+								<SiVaultwarden className='text-5xl text-white' />
+								<h1 className='mb-5 text-5xl'>ault</h1>
 							</div>
 							{/* Top - Button */}
 							{/* Assuming ConnectWallet and Input components are appropriately defined */}

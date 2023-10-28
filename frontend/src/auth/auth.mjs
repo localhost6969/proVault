@@ -1,6 +1,8 @@
 import {initializeApp} from 'firebase/app';
 import {GoogleAuthProvider, getAuth, signInWithPopup}  from 'firebase/auth';
 import {getFirestore, query,collection, where, getDocs, addDoc} from '@firebase/firestore';
+import { useAddress, useContract } from '@thirdweb-dev/react';
+import { ThirdwebSDK } from '@thirdweb-dev/sdk';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDwvCy5S_Otq2PNbk1oKtdW0UfHDiBYSDQ",
@@ -39,3 +41,26 @@ export const signInWithGoogle = async () => {
     }
 };
 
+export const loggedIn = () => {
+    console.log( "loggedin")
+}
+
+export const isLoggedIn = async ()=>{
+    // const sdk = getSDK;
+    const address = useAddress();
+    console.log(address, "here")
+}
+
+export const getContract = ()=>{
+    try {
+        const {contract} = useContract(import.meta.env.CONTRACT_ADDRESS);
+        return contract ? contract : null;
+    } catch (err) {
+        console.log("Error in fetching contract : ", err);
+        return null
+    }
+}
+
+export const getSDK = new ThirdwebSDK(31337, {
+    clientId : import.meta.env.CLIENT_ID
+});

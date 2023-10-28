@@ -43,10 +43,8 @@ contract VaultFactory is Ownable, Pausable{
         AdminToVaultAddress[_admin] = _vaultAddr;
         FunderToVaultAddress[_fund] = _vaultAddr;
         DeveloperToVaultAddress[_dev] = _vaultAddr;
-
         
-
-        vaultCount += 1;
+        vaultCount +=1;
     }
 
     
