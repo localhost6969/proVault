@@ -12,19 +12,33 @@ contract VaultFactory is Ownable, Pausable{
     uint256 public vaultCount;
 
     address[] public vaults;
-    mapping (address => address) public ownerOfVault; // vault => owner
+    address[] public admins;
+    address[] public funder;
+    address[] public developer;
 
-
+    mapping (address => address) public vaultAddressToAdmin;
+    mapping (address => address) public AdminToVaultAddress;
+    mapping (address => address) public FunderToVaultAddress;
+    mapping (address => address) public DeveloperToVaultAddress;
 
     constructor() Ownable(msg.sender) {
 
     }
 
-    function createVault(address _admin, address _fund, address _dev, address _special) public returns(address) {
+    function createVault(address _admin, address _fund, address _dev, address _special) public{
+
         Vault _vault = new Vault(_admin, _fund, _dev, _special);
-        vaults.push(address(_vault));
-        ownerOfVault[address(_vault)] = _admin;
-        return address(_vault);
+        address _vaultAddr = address(_vault);
+
+        vaults.push(_vaultAddr);
+        admins.push(_admin);
+        funder.push(_fund);
+        developer.push(_dev);
+
+        vaultAddressToAdmin[_vaultAddr] = _admin;
+        AdminToVaultAddress[_admin] = _vaultAddr;
+        FunderToVaultAddress[_fund] = _vaultAddr;
+        DeveloperToVaultAddress[_dev] = _vaultAddr;
     }
 
     
@@ -35,6 +49,22 @@ contract VaultFactory is Ownable, Pausable{
 
     function unpause() public onlyOwner {
         _unpause();
+    }
+
+    function getVaultsLength() public view returns(uint256) {
+        return vaults.length;
+    }
+
+    function getAdminsLength() public view returns(uint256) {
+        return admins.length;
+    }
+
+    function getFunderLength() public view returns(uint256) {
+        return funder.length;
+    }
+    
+    function getDeveloperLength() public view returns(uint256) {
+        return developer.length;
     }
 
 }

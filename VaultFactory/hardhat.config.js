@@ -9,7 +9,7 @@ const XDC_RPC_URL2 = process.env.XDC_RPC_URL2
 const XDC_RPC_URL3 = process.env.XDC_RPC_URL3
 const PRIVATE_KEY = process.env.PRIVATE_KEY
 const MATIC_RPC_URL = process.env.MATIC_RPC_URL
-const API_KEY = process.env.API_KEY
+const POLYGON_KEY = process.env.POLYGON_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -17,7 +17,9 @@ module.exports = {
   defaultNetwork: "hardhat",
   networks:{
     xdc: {
-      url: XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1,
+      url: "http://erpc.apothem.network/",
+      // "http://xdc-apothem-network.rpc.thirdweb.com/c3bd26c426ad51a037777501a50767c5/",
+      //  || XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1 ,
       accounts: [PRIVATE_KEY],
       chainId: 51
     },
@@ -45,7 +47,7 @@ module.exports = {
     }
   },
   etherscan : {
-    apiKey : API_KEY
+    apiKey : POLYGON_KEY
   },
   paths: {
     sources: "./contracts",
