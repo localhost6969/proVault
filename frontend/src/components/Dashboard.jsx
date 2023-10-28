@@ -5,7 +5,7 @@ import {
 	Image,
 	Button,
 	Input,
-	Link
+	Link,
 } from "@nextui-org/react";
 
 import NavBar from "./Navbar";
@@ -15,7 +15,7 @@ import { RiBankLine } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault } from "../utils/vaults";
 
-const { VITE_CONTRACT_ADDRESS} = import.meta.env;
+const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
 // Example usage
 const cardData = [
@@ -26,24 +26,24 @@ const cardData = [
 ];
 
 const Dashboard = () => {
-
 	const deposit = () => {
 		alert("Deposited");
 	};
-	const {contract, isLoading, error} = useContract(VITE_CONTRACT_ADDRESS);
+	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const [vault, setVautAddress] = useState();
 	const address = useAddress();
 	useEffect(() => {
 		if (address !== undefined && !isLoading) {
-			getVault(address, contract).then(res=>{
-				console.log("Get vault ",res)
-				if(res.vaultAddress) {
-					setVautAddress(res);
-				}
-			}).catch(err=>{
-				console.log(err)
-			});
-			
+			getVault(address, contract)
+				.then(res => {
+					console.log("Get vault ", res);
+					if (res.vaultAddress) {
+						setVautAddress(res);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		}
 	}, [address, contract]);
 	return (
@@ -51,19 +51,28 @@ const Dashboard = () => {
 			<div className='dashboard-page'>
 				<NavBar />
 				<div className='flex items-center p-10 ml-40'>
-					{
-						vault
-						? <p>Address : {vault.vaultAddress} : Role {vault.role}</p>
-						: 
-						<Button as={Link} href="/create" className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>
+					{vault ? (
+						<p>
+							Address : {vault.vaultAddress} : Role {vault.role}
+						</p>
+					) : (
+						<Button
+							as={Link}
+							href='/create'
+							className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'
+						>
 							<div className='flex items-center mb-4'>
 								<PiVaultFill className='text-4xl text-gray-100 mr-4' />
 								<h2 className='text-2xl font-bold text-white'>Create Vault</h2>
 							</div>
 							<p className='text-gray-300'>Create a vault to deposit</p>
 						</Button>
-					}
-					<Button className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>
+					)}
+					<Button
+						as={Link}
+						href='/deposit'
+						className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'
+					>
 						<div className='flex items-center mb-4'>
 							<RiBankLine className='text-4xl text-gray-100 mr-4' />
 							<h2 className='text-2xl font-bold text-white'>Deposit</h2>
