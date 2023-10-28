@@ -8,6 +8,7 @@ import {
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import env from "react-dotenv";
 import { getContract, isLoggedIn } from "../auth/auth.mjs";
+import VaultAbi from '../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json' 
 
 const contractAddress = import.meta.env.CONTRACT_ADDRESS;
 
@@ -32,20 +33,24 @@ export const createVault = async (
 	}
 };
 
-export const getVault = async (address, contract) => {
+export const getVault = async (sdk,address, contract) => {
 	try {
 		if (address && contract) {
+      
 			const res = await contract.call("AdminToVaultAddress", [address]);
 			if (res != "0x0000000000000000000000000000000000000000") {
-				return { vaultAddress: res, role: "admin" };
+        const balance = await getBalance(sdk,res)
+				return { vaultAddress: res, role: "admin" ,balance : balance };
 			}
 			const res1 = await contract.call("DeveloperToVaultAddress", [address]);
 			if (res1 != "0x0000000000000000000000000000000000000000") {
-				return { vaultAddress: res1, role: "developer" };
+        const balance = await getBalance(sdk,res1)
+				return { vaultAddress: res1, role: "developer", balance : balance };
 			}
 			const res2 = await contract.call("FunderToVaultAddress", [address]);
 			if (res2 != "0x0000000000000000000000000000000000000000") {
-				return { vaultAddress: res2, role: "developer" };
+        const balance = await getBalance(sdk,res2)
+				return { vaultAddress: res2, role: "funder", balance : balance  };
 			} else {
 				return false;
 			}
@@ -54,3 +59,9 @@ export const getVault = async (address, contract) => {
 		console.error("Error in getting vault address : ", err);
 	}
 };
+
+export const getBalance = async (sdk,vaultAddress)=>{
+    const contract = await sdk.getContract(vaultAddress, VaultAbi.abi);
+    const balance = await contract.call('getBalance');
+    return(parseInt(balance)/1000000000000000000);
+}

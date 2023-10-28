@@ -36,7 +36,7 @@ export const getAllAssets = async (vaultAddress) =>{
         const { data, isLoading, error } = useContractRead(contract, "getAssetAddressLength");
         if (!isLoading) {
           for(var i=0;i<data;i++) {
-
+            
           }
         } 
       }

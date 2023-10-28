@@ -9,11 +9,11 @@ import {
 } from "@nextui-org/react";
 
 import NavBar from "./Navbar";
-import { useAddress, useContract } from "@thirdweb-dev/react";
+import { useAddress, useContract, useSDK } from "@thirdweb-dev/react";
 import CreateVault from "./CreateVault";
 import { RiBankLine } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
-import { getVault } from "../utils/vaults";
+import { getVault,getBalance } from "../utils/vaults";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
@@ -32,9 +32,10 @@ const Dashboard = () => {
 	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const [vault, setVautAddress] = useState();
 	const address = useAddress();
+	const sdk = useSDK();
 	useEffect(() => {
 		if (address !== undefined && !isLoading) {
-			getVault(address, contract)
+			getVault(sdk,address, contract)
 				.then(res => {
 					console.log("Get vault ", res);
 					if (res.vaultAddress) {
