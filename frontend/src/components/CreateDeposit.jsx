@@ -80,8 +80,6 @@ const CreateDeposit = () => {
 	);
 };
 
-
-
 function TransactionButton (props) {
 	const sdk = useSDK();
 	const initiateTransfer = async ()=> {

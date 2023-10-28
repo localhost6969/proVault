@@ -14,16 +14,12 @@ import CreateVault from "./CreateVault";
 import { RiBankLine } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault,getBalance } from "../utils/vaults";
+import { getAllAssets,addAsset } from "../utils/assets";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
 // Example usage
-const cardData = [
-	{ title: "Card 1", description: "Description for Card 1" },
-	{ title: "Card 2", description: "Description for Card 2" },
-	{ title: "Card 3", description: "Description for Card 3" },
-	{ title: "Card 4", description: "Description for Card 4" },
-];
+
 
 const Dashboard = () => {
 	const deposit = () => {
@@ -32,6 +28,7 @@ const Dashboard = () => {
 	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const [vault, setVautAddress] = useState();
 	const address = useAddress();
+	const [assets, setAssets] = useState([]);
 	const sdk = useSDK();
 	useEffect(() => {
 		if (address !== undefined && !isLoading) {
@@ -39,6 +36,14 @@ const Dashboard = () => {
 				.then(res => {
 					console.log("Get vault ", res);
 					if (res.vaultAddress) {
+						getAllAssets(sdk,res.vaultAddress)
+						.then(res=>{
+							setAssets(res);
+							console.log(res);
+						})
+						.catch(err=>{
+							console.error('Error getting assets', err);
+						});
 						setVautAddress(res);
 					}
 				})
@@ -47,6 +52,13 @@ const Dashboard = () => {
 				});
 		}
 	}, [address, contract]);
+	const addNewAsset = async (form) => {
+		form.preventDefault();
+		const assetAddress = form.target.assetAddress.value;
+		const chainId = form.target.chainId.value;
+		const res = await addAsset(sdk,assetAddress,chainId,vault.vaultAddress);
+		console.log(res);
+	}
 	return (
 		<>
 			<div className='dashboard-page'>
@@ -83,7 +95,7 @@ const Dashboard = () => {
 				</div>
 				<div className='flex flex-col items-center w-3/4  h-3/4 bg-opacity-60 bg-white shadow-md rounded-xl p-8 ml-40 overflow-y-auto max-h-full cards-container mt-20'>
 					<div className='flex items-center justify-between mb-4'>
-						<div className='flex space-x-4'>
+						<form className='flex space-x-4' onSubmit={addNewAsset}>
 							<Input
 								type='text'
 								label='Asset id'
@@ -91,6 +103,7 @@ const Dashboard = () => {
 								color='secondary'
 								variant='flat'
 								radius='sm'
+								name="assetAddress"
 							/>
 							<Input
 								type='text'
@@ -99,6 +112,7 @@ const Dashboard = () => {
 								color='secondary'
 								variant='flat'
 								radius='sm'
+								name="chainId"
 							/>
 							<Button
 								// className='text-black text-tiny bg-black/20'
@@ -107,28 +121,30 @@ const Dashboard = () => {
 								radius='sm'
 								size='lg'
 								border='secondary'
+								type="submit"
 							>
 								Add asset
 							</Button>
-						</div>
+						</form>
 					</div>
-					{cardData.length === 0 && (
+					{assets.length === 0 && (
 						<div className='flex items-center justify-center w-full h-full'>
 							<h1 className='text-2xl font-bold text-gray-500'>
 								No assets to show
 							</h1>
 						</div>
 					)}
-					{cardData.map((item, index) => (
+					{assets.map((item, index) => (
 						<div
 							key={index}
 							className='bg-white p-6 mb-4 rounded-md shadow-md w-full'
 						>
 							{/* Card content goes here */}
 							<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
-								{item.title}
+								{item.assetAddress}
 							</h2>
-							<p className='text-gray-700'>{item.description}</p>
+							<p className='text-gray-700'>{item.walletBalance}</p>
+							<p className='text-gray-700'>{item.networkName}</p>
 						</div>
 					))}
 				</div>
