@@ -3,35 +3,42 @@ import { IoArrowBack } from "react-icons/io5";
 import { Link, Navigate } from "react-router-dom";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
-import {createVault} from '../utils/vaults';
+import { createVault } from "../utils/vaults";
 
-const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS} = import.meta.env;
+const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS } = import.meta.env;
 const CreateVault = () => {
 	const address = useAddress();
 	const [navigate, setNavigate] = useState(false);
-	const {contract, isLoading, error} = useContract(VITE_CONTRACT_ADDRESS);
-	const clickToCreate = async (form)=>{
+	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
+	const clickToCreate = async form => {
 		try {
 			form.preventDefault();
 			const fundAddress = form.target.fundAddress.value;
 			const devAddress = form.target.devAddress.value;
 			console.log(fundAddress, devAddress);
-			const res = await createVault(contract, address, fundAddress, devAddress, VITE_SPECIAL_WALLET_ADDRESS);
-			console.log('res : ', res);
+			const res = await createVault(
+				contract,
+				address,
+				fundAddress,
+				devAddress,
+				VITE_SPECIAL_WALLET_ADDRESS
+			);
+			console.log("res : ", res);
 			alert("Vault Created");
 			setNavigate(true);
 		} catch (err) {
-			console.log(err)
+			console.log(err);
 		}
-		
-	}
+	};
 	return (
 		<>
-			{navigate && <Navigate to='/dashboard' replace/>}
+			{navigate && <Navigate to='/dashboard' replace />}
 			<div className='createvault-page h-screen'>
-				
 				<div className='p-20'>
-					<form className='bg-secondary-500 p-10 backdrop-blur-md bg-opacity-70 rounded-xl' onSubmit={clickToCreate}>
+					<form
+						className='bg-secondary-500 p-10 backdrop-blur-md bg-opacity-70 rounded-xl'
+						onSubmit={clickToCreate}
+					>
 						<div className='mt-4 mb-4 '>
 							<div className='flex items-center'>
 								<Link to='/dashboard'>
@@ -51,11 +58,11 @@ const CreateVault = () => {
 									color='primary'
 									variant='flat'
 									radius='sm'
-									name="fundAddress"
+									name='fundAddress'
 								/>
 							</div>
 						</div>
-						<div className='mb-6'>
+						<div className='mb-4 mt-4'>
 							<div className='flex flex-wrap w-full gap-4 md:flex-nowrap'>
 								<Input
 									type='text'
@@ -64,17 +71,29 @@ const CreateVault = () => {
 									color='primary'
 									variant='flat'
 									radius='sm'
-									name="devAddress"
+									name='devAddress'
+								/>
+							</div>
+						</div>
+						<div className='mb-6'>
+							<div className='flex flex-wrap w-full gap-4 md:flex-nowrap'>
+								<Input
+									type='text'
+									label='Organization Name'
+									className='text-white rounded-md'
+									color='primary'
+									variant='flat'
+									radius='sm'
+									name='orgName'
 								/>
 							</div>
 						</div>
 						<Button
-							variant='flat'
-							color='default'
+							variant='solid'
+							color='success'
 							radius='sm'
 							size='lg'
-							border='default'
-							type="submit"
+							type='submit'
 						>
 							Create Vault
 						</Button>

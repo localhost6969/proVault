@@ -9,7 +9,7 @@
 
 	color-scheme: light dark;
 	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	background: url("./assets/blob-scene-haikei.svg") center/cover;
 
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
@@ -26,8 +26,10 @@
 .dashboard-page,
 .createvault-page,
 .home-page,
-.automate-page {
+.automate-page,
+.displayvaults-page {
 	background: url("./assets/blob-scene-haikei.svg") center/cover;
+	background-attachment: fixed;
 }
 
 button {

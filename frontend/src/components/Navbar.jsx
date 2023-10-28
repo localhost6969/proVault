@@ -40,6 +40,11 @@ export default function NavBar() {
 						Automate
 					</Link>
 				</NavbarItem>
+				<NavbarItem>
+					<Link color='foreground' to='/vaults'>
+						Vaults
+					</Link>
+				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent justify='end'>
 				{address ? (

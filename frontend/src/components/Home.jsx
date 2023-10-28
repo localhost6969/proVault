@@ -5,8 +5,6 @@ import { SiVaultwarden } from "react-icons/si";
 import { Link } from "react-router-dom";
 
 function Home() {
-
-	
 	return (
 		<div className='home-page h-screen'>
 			<NavBar />
