@@ -15,6 +15,7 @@ import {
   useAddress,
 } from "@thirdweb-dev/react";
 import { XinfinXdcNetwork, XdcApothemNetwork, Mumbai, Localhost} from "@thirdweb-dev/chains";
+import env from 'react-dotenv'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -22,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <NextUIProvider>
       <ThirdwebProvider
         activeChain={Localhost}
-        clientId="c3bd26c426ad51a037777501a50767c5"
+        clientId={import.meta.env.CLIENT_ID}
         supportedWallets={[
           metamaskWallet(),
           coinbaseWallet({ recommended: true }),

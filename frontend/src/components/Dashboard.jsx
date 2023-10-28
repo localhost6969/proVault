@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
 import NavBar from "./Navbar";
 import { useAddress } from "@thirdweb-dev/react";
-import { createVault } from "../utils/createVault";
+import { createVault } from "../utils/vaults";
 
 const Dashboard = () => {
 	const createVault = () => {
-		
+
 		setCreatedVault(true);
 	};
 
 	const deposit = () => {
 		alert("Deposited");
+		
 	};
 
 	const [createdVault, setCreatedVault] = useState(false);

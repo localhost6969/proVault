@@ -6,8 +6,9 @@ import { Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/login/Login";
 import Dashboard from "./components/Dashboard";
-import {createVault} from "./utils/createVault" 
+import {createVault, getVault} from "./utils/vaults" 
 function App() {
+	
 	return (
 		<div>
 			<Routes>
