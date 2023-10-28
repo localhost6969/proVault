@@ -21,7 +21,7 @@ const CreateVault = () => {
 			alert("Vault Created");
 			setNavigate(true);
 		} catch (err) {
-
+			console.log(err)
 		}
 		
 	}

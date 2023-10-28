@@ -1,13 +1,38 @@
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, button } from "@nextui-org/react";
 import { IoArrowBack } from "react-icons/io5";
 import { Link, Navigate } from "react-router-dom";
+import { useAddress, useContract, Web3Button, useContractWrite, useSDK } from "@thirdweb-dev/react";
+import { getVault } from "../utils/vaults";
+import { useState,useEffect } from "react";
+import VaultAbi from '../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json' 
+const {VITE_CONTRACT_ADDRESS} = import.meta.env;
 const CreateDeposit = () => {
+	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
+	const [vaultAddress, setVautAddress] = useState();
+	const [depositAmount, setDeposit] = useState(0.0);
+	const address = useAddress();
+	const sdk = useSDK();
+	useEffect(() => {
+		if (address !== undefined && !isLoading) {
+			getVault(sdk,address, contract)
+				.then(res => {
+					console.log("Get vault ", res);
+					if (res.vaultAddress) {
+						setVautAddress(res.vaultAddress);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		}
+	}, [address, contract]);
 	return (
 		<>
 			<div className='createvault-page h-screen'>
 				<div className='p-20'>
 					<div className='bg-secondary-500 p-10 backdrop-blur-md bg-opacity-70 rounded-xl'>
-						<div className='mt-4 mb-4 '>
+						{
+							vaultAddress && <div className='mt-4 mb-4 '>
 							<div className='flex items-center'>
 								<Link to='/dashboard'>
 									<IoArrowBack className='text-3xl text-white mr-4 bg-secondary-800 rounded-full p-1' />
@@ -27,9 +52,17 @@ const CreateDeposit = () => {
 									variant='flat'
 									radius='sm'
 									name='fundAddress'
+									onChange={(e)=>setDeposit(e.target.value)}
+									defaultValue="0.0"
 								/>
 							</div>
+							<div className="mt-4">
+							<TransactionButton vaultAddress={vaultAddress} amount={depositAmount} />
+							</div>
+							
 						</div>
+						
+						}
 						{/* <Button
 						variant='flat'
 						color='default'
@@ -46,5 +79,22 @@ const CreateDeposit = () => {
 		</>
 	);
 };
+
+
+
+function TransactionButton (props) {
+	const sdk = useSDK();
+	const initiateTransfer = async ()=> {
+		const result = await sdk.wallet.transfer(props.vaultAddress,props.amount);
+		console.log(result);
+	}
+  console.log(props.vaultAddress);
+	return (
+		<button onClick={initiateTransfer} type="button">
+			Send Transaction
+		</button>
+	)
+}
+
 
 export default CreateDeposit;
