@@ -72,12 +72,13 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
 
         if(isSelling[_vault]){
             for (uint i = 0; i < subscriptionSellers.length; i++){
-            if(subscriptionSellers[i]==_vault){
-                delete subscriptionSellers[i];
+                if(subscriptionSellers[i]==_vault){
+                    delete subscriptionSellers[i];
+                }
             }
         }
-        }
 
+        _burn(infoOfVault[_vault].tokenId);
         delete infoOfVault[_vault];
         delete isSelling[_vault];
     }
@@ -102,9 +103,27 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
         return price + (price * royaltyPercentage)/100;
     }
 
-    function purchase(address from, address vaultToBuy) public {
-        // if(infoOfVault[_vaultToBuy]);
+    function purchase(address from, address vaultToBuy) public payable isExpired(vaultToBuy){ 
+        require(isSelling[vaultToBuy] == true, "Not for sale");
+        require(infoOfVault[vaultToBuy].sellPrice >= msg.value, "Not enough funds");
+
+        payable(from).transfer(msg.value);
+
+        sellingOff(vaultToBuy);
+        for(uint i = 0; i < subscriptionSellers.length; i++){
+            if(subscriptionSellers[i]==vaultToBuy){
+                delete subscriptionSellers[i];
+            }
+        }
+
+        for (uint i = 0; i < subscriptionHolders.length; i++){
+            if(subscriptionHolders[i]==vaultToBuy){
+                delete subscriptionHolders[i];
+            }
+        }
+
+        infoOfVault[vaultToBuy].owner = from;
+        infoOfVault[vaultToBuy].sellPrice = 0;
     }
-
-
+    
 }

@@ -9,19 +9,22 @@ const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS } = import.meta.env;
 const CreateVault = () => {
 	const address = useAddress();
 	const [navigate, setNavigate] = useState(false);
+	const [loadingVault, setLoadingVault] = useState(false);
 	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const clickToCreate = async form => {
 		try {
 			form.preventDefault();
 			const fundAddress = form.target.fundAddress.value;
 			const devAddress = form.target.devAddress.value;
+			const orgName = form.target.orgName.value;
 			console.log(fundAddress, devAddress);
 			const res = await createVault(
 				contract,
 				address,
 				fundAddress,
 				devAddress,
-				VITE_SPECIAL_WALLET_ADDRESS
+				VITE_SPECIAL_WALLET_ADDRESS,
+				orgName
 			);
 			console.log("res : ", res);
 			alert("Vault Created");
