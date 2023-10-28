@@ -1,21 +1,26 @@
-import * as React from 'react'
-import ReactDOM from 'react-dom/client'
-import {NextUIProvider} from '@nextui-org/react'
-import App from './App.jsx'
-import './index.css'
-import { BrowserRouter } from 'react-router-dom'
+import * as React from "react";
+import ReactDOM from "react-dom/client";
+import { NextUIProvider } from "@nextui-org/react";
+import App from "./App.jsx";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
 import {
-  ThirdwebProvider,
-  ConnectWallet,
-  metamaskWallet,
-  coinbaseWallet,
-  walletConnect,
-  localWallet,
-  embeddedWallet,
-  useAddress,
+	ThirdwebProvider,
+	ConnectWallet,
+	metamaskWallet,
+	coinbaseWallet,
+	walletConnect,
+	localWallet,
+	embeddedWallet,
+	useAddress,
 } from "@thirdweb-dev/react";
-import { XinfinXdcNetwork, XdcApothemNetwork, Mumbai, Localhost} from "@thirdweb-dev/chains";
-import env from 'react-dotenv'
+import {
+	XinfinXdcNetwork,
+	XdcApothemNetwork,
+	Mumbai,
+	Localhost,
+} from "@thirdweb-dev/chains";
+import env from "react-dotenv";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -9,6 +9,7 @@ const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS } = import.meta.env;
 const CreateVault = () => {
 	const address = useAddress();
 	const [navigate, setNavigate] = useState(false);
+	const [loadingVault, setLoadingVault] = useState(false);
 	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
 	const clickToCreate = async form => {
 		try {

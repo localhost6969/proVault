@@ -1,4 +1,4 @@
-import { Card, Skeleton, Spinner } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 import NavBar from "./Navbar";
 
 const Loading = () => {
