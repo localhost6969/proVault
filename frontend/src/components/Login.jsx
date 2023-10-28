@@ -21,6 +21,7 @@ export default function Login() {
 	useEffect(() => {
 		if (address !== undefined) {
 			setNavigate(true);
+			localStorage.setItem("user_address", address);
 		}
 	}, [address]);
 

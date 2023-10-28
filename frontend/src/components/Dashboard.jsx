@@ -42,8 +42,8 @@ const Dashboard = () => {
 	console.log(address);
 	return (
 		<>
-			<NavBar />
-			<div>
+			<div className='dashboard-page'>
+				<NavBar />
 				<div className='flex items-center p-10 ml-40'>
 					<Link href='/create'>
 						<Button className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>

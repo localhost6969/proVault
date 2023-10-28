@@ -11,27 +11,23 @@ import {
 import { useLogout, useAddress } from "@thirdweb-dev/react";
 import { Link } from "react-router-dom";
 import { SiVaultwarden } from "react-icons/si";
+import { Navigate } from "react-router-dom";
 
 export default function NavBar() {
 	const { logout, isLoading } = useLogout();
 	const address = useAddress();
 	return (
-		<NextUINavbar shouldHideOnScroll className='bg-gray-500'>
+		<NextUINavbar shouldHideOnScroll className='bg-gray-500 bg-opacity-50'>
 			<NavbarBrand>
 				<Link to='/'>
-					<SiVaultwarden className='text-4xl text-gray-800 ml-3' />
+					<SiVaultwarden className='text-4xl text-secondary-200 ml-3' />
 				</Link>
 				{/* <h1 className='text-2xl text-gray-800'>Pro Vault</h1> */}
 			</NavbarBrand>
 			<NavbarContent className='hidden sm:flex gsp-4' justify='center'>
 				<NavbarItem>
 					<Link color='foreground' to='/'>
-						Pricing
-					</Link>
-				</NavbarItem>
-				<NavbarItem>
-					<Link color='foreground' to='/'>
-						Contact Us
+						Subscribe
 					</Link>
 				</NavbarItem>
 				<NavbarItem>
@@ -47,7 +43,10 @@ export default function NavBar() {
 							variant='flat'
 							className='bg-red-700 text-white'
 							radius='sm'
-							onClick={() => localStorage.clear()}
+							onClick={() => {
+								localStorage.clear();
+								window.location.href = "/";
+							}}
 						>
 							Logout
 						</Button>
@@ -64,31 +63,4 @@ export default function NavBar() {
 			</NavbarContent>
 		</NextUINavbar>
 	);
-}
-
-{
-	/* <div className='mt-4 mb-4'>
-								<div className='flex flex-wrap w-full gap-4 md:flex-nowrap'>
-									<Input
-										type='text'
-										label='Fund address'
-										className='text-white rounded-md'
-										color='primary'
-										variant='flat'
-										radius='sm'
-									/>
-								</div>
-							</div>
-							<div className='mb-6'>
-								<div className='flex flex-wrap w-full gap-4 md:flex-nowrap'>
-									<Input
-										type='text'
-										label='Developer address'
-										className='text-white rounded-md'
-										color='primary'
-										variant='flat'
-										radius='sm'
-									/>
-								</div>
-							</div> */
 }

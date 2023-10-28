@@ -23,6 +23,12 @@
 		center/cover;
 }
 
+.dashboard-page,
+.createvault-page,
+.home-page {
+	background: url("./assets/blob-scene-haikei.svg") center/cover;
+}
+
 button {
 	border-radius: 8px;
 	border: 1px solid transparent;
