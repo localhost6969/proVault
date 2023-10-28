@@ -4,14 +4,14 @@ require("dotenv").config()
 
 var args = ""
 
-// const rpcUrl = "https://erpc.apothem.network"
-const rpcUrl = "http://localhost:8545/" //testing
+const rpcUrl = "https://erpc.apothem.network"
+// const rpcUrl = "http://localhost:8545/" //testing
 
-// const privateKey = "94c2b1352268d695303372e75ed8354091faa6e0c1a30fa7228f8af409d0587c"
-const privateKey = "df57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e" // testing
-const publicKey = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+const privateKey = "94c2b1352268d695303372e75ed8354091faa6e0c1a30fa7228f8af409d0587c"
+// const privateKey = "df57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e" // testing
+// const publicKey = "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
 
-var contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+var contractAddress = "0x2C057F1C4F15bd03b04220770b2Df98224eAB956"
 
 const provider = new ethers.JsonRpcProvider(rpcUrl);
 
