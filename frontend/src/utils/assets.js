@@ -45,13 +45,12 @@ export const getAllAssets = (sdk,vaultAddress) =>{
       const contract = await sdk.getContract(vaultAddress, VaultAbi.abi);
       let assets = [];
       const data = await contract.call("getAssetAddressLength");
-      const assetLength = parseInt(data)
+      const assetLength = parseInt(data);
       for(var i=0;i<assetLength;i++) {
         const asset = await getAsset(contract, i);
         assets.push(asset);
       }
       resolve(assets);
-   
     } catch (err) {
       console.log("Error in getting all assets: ", err);
       reject(null);

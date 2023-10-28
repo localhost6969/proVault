@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <NextUIProvider>
       <ThirdwebProvider
         activeChain={XdcApothemNetwork}
-        clientId={import.meta.env.CLIENT_ID}
+        clientId={import.meta.env.VITE_CLIENT_ID}
         supportedWallets={[
           metamaskWallet(),
           coinbaseWallet({ recommended: true }),

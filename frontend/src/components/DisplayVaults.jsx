@@ -2,6 +2,9 @@ import { Card } from "@nextui-org/react";
 import { RiBankLine, RiCoinsFill } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import NavBar from "./Navbar";
+import { useEffect, useState } from "react";
+import { getAllVaults } from "../utils/vaults";
+import { useSDK } from "@thirdweb-dev/react";
 const DisplayVaults = () => {
 	const cardData = [
 		{ id: 1, title: "Card 1", content: "Content for Card 1" },
@@ -15,6 +18,12 @@ const DisplayVaults = () => {
 
 		// Add more cards as needed
 	];
+	const [vaults, setVaults] = useState();
+	const sdk = useSDK();
+	useEffect(()=>{
+		
+		getAllVaults(sdk);
+	},[]);
 	return (
 		<>
 			<div className='displayvaults-page h-full'>

@@ -10,6 +10,8 @@ import env from "react-dotenv";
 import { getContract, isLoggedIn } from "../auth/auth.mjs";
 import VaultAbi from '../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json' 
 
+const {VITE_CONTRACT_ADDRESS} = import.meta.env;
+
 const contractAddress = import.meta.env.CONTRACT_ADDRESS;
 
 export const createVault = async (
@@ -42,7 +44,7 @@ export const getVault = async (sdk,address, contract) => {
         const balance = await getBalance(sdk,res)
 				return { vaultAddress: res, role: "admin" ,balance : balance };
 			}
-			const res1 = await contract.call("DeveloperToVaultAddress", [address]);
+			const res1 = await contract.call("DeveloperToVaultAddress", [address] );
 			if (res1 != "0x0000000000000000000000000000000000000000") {
         const balance = await getBalance(sdk,res1)
 				return { vaultAddress: res1, role: "developer", balance : balance };
@@ -67,5 +69,18 @@ export const getBalance = async (sdk,vaultAddress)=>{
 }
 
 export const getAllVaults = async (sdk) =>{
-	
+	try {
+		const contract = await sdk.getContract(VITE_CONTRACT_ADDRESS);
+		let vaultsLength = await contract.call('vaultCount');
+		vaultsLength = parseInt(vaultsLength);
+		let allVaults=[];
+		for(let i=0;i<vaultsLength;i++) {
+			const vault = await getVault(sdk,i);
+			allVaults.push(vault);
+		}
+		return allVaults;
+	} catch(err) {
+		console.log("Error in getting all vaults", err);
+		return []
+	}
 }
