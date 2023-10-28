@@ -4,9 +4,11 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import Login from "./components/login/Login";
+import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
-import CreateVault from './components/CreateVault';
+import CreateVault from "./components/CreateVault";
+import Protected from "./components/Protected";
+
 function App() {
 	
 	return (
@@ -14,8 +16,22 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Home />} />
 				<Route path='/login' element={<Login />} />
-				<Route path='/dashboard' element={<Dashboard />} />
-				<Route path='/create' element={<CreateVault />} />
+				<Route
+					path='/dashboard'
+					element={
+						<Protected>
+							<Dashboard />
+						</Protected>
+					}
+				/>
+				<Route
+					path='/create'
+					element={
+						<Protected>
+							<CreateVault />
+						</Protected>
+					}
+				/>
 			</Routes>
 		</div>
 	);

@@ -13,13 +13,11 @@ const POLYGON_KEY = process.env.POLYGON_KEY
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.20",
+  solidity: "0.8.18",
   defaultNetwork: "hardhat",
   networks:{
     xdc: {
-      url: "http://erpc.apothem.network/",
-      // "http://xdc-apothem-network.rpc.thirdweb.com/c3bd26c426ad51a037777501a50767c5/",
-      //  || XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1 ,
+      url: XDC_RPC_URL3 || XDC_RPC_URL2 || XDC_RPC_URL1 ,
       accounts: [PRIVATE_KEY],
       chainId: 51
     },

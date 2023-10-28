@@ -1,7 +1,16 @@
-import { useEffect, useState } from "react";
-import { Card, CardFooter, Image, Button, Input } from "@nextui-org/react";
+import { useState, useEffect } from "react";
+import {
+	Card,
+	CardFooter,
+	Image,
+	Button,
+	Input,
+	Link
+} from "@nextui-org/react";
+
 import NavBar from "./Navbar";
 import { useAddress, useContract } from "@thirdweb-dev/react";
+import CreateVault from "./CreateVault";
 import { RiBankLine } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault } from "../utils/vaults";
@@ -14,49 +23,46 @@ const cardData = [
 	{ title: "Card 2", description: "Description for Card 2" },
 	{ title: "Card 3", description: "Description for Card 3" },
 	{ title: "Card 4", description: "Description for Card 4" },
-	// { title: "Card 5", description: "Description for Card 5" },
-	// { title: "Card 6", description: "Description for Card 6" },
-	// { title: "Card 7", description: "Description for Card 7" },
-	// { title: "Card 8", description: "Description for Card 8" },
-	// { title: "Card 9", description: "Description for Card 9" },
-	// { title: "Card 10", description: "Description for Card 10" },
 ];
 
 const Dashboard = () => {
-	const createVault = () => {
-		setCreatedVault(true);
-	};
 
 	const deposit = () => {
 		alert("Deposited");
-		
 	};
-	
-	console.log();
 	const {contract, isLoading, error} = useContract(VITE_CONTRACT_ADDRESS);
-	const [createdVault, setCreatedVault] = useState(false);
-	const [contractState, setContractState] = useState(contract)
+	const [vault, setVautAddress] = useState();
 	const address = useAddress();
-	if(contract) {
-		getVault(address, contract).then(res=>{
-			console.log(res)
-		}).catch(err=>{
-			console.log(err)
-		});
-		console.log(1);
-	}
+	useEffect(() => {
+		if (address !== undefined && !isLoading) {
+			getVault(address, contract).then(res=>{
+				console.log("Get vault ",res)
+				if(res.vaultAddress) {
+					setVautAddress(res);
+				}
+			}).catch(err=>{
+				console.log(err)
+			});
+			
+		}
+	}, [address, contract]);
 	return (
 		<>
-			<NavBar />
-			<div>
+			<div className='dashboard-page'>
+				<NavBar />
 				<div className='flex items-center p-10 ml-40'>
-					<Button className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>
-						<div className='flex items-center mb-4'>
-							<PiVaultFill className='text-4xl text-gray-100 mr-4' />
-							<h2 className='text-2xl font-bold text-white'>Create Vault</h2>
-						</div>
-						<p className='text-gray-300'>Create a vault to deposit</p>
-					</Button>
+					{
+						vault
+						? <p>Address : {vault.vaultAddress} : Role {vault.role}</p>
+						: 
+						<Button as={Link} href="/create" className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>
+							<div className='flex items-center mb-4'>
+								<PiVaultFill className='text-4xl text-gray-100 mr-4' />
+								<h2 className='text-2xl font-bold text-white'>Create Vault</h2>
+							</div>
+							<p className='text-gray-300'>Create a vault to deposit</p>
+						</Button>
+					}
 					<Button className='relative bg-opacity-70 backdrop-filter backdrop-blur-md bg-blue-500 p-10 rounded-md shadow-md m-5 cursor-pointer h-50 w-50 flex flex-col'>
 						<div className='flex items-center mb-4'>
 							<RiBankLine className='text-4xl text-gray-100 mr-4' />

@@ -5,10 +5,9 @@ import { getContract, isLoggedIn } from "../auth/auth.mjs";
 
 const contractAddress = import.meta.env.CONTRACT_ADDRESS;
 
-export const createVault = async (ownerAddress, adminAddress, devAddress) =>{
+export const createVault = async (contract,ownerAddress, adminAddress, devAddress, specialAddress) =>{
     try {
-      const { contract } = useContract(contractAddress);
-      const res = await contract.call('createVault',[ownerAddress, adminAddress, devAddress, ownerAddress]);
+      const res = await contract.call('createVault',[ownerAddress, adminAddress, devAddress, specialAddress]);
       return res.receipt.logs[0].address;
     } catch (err) {
       console.log("Error creating vault: ", err);
@@ -20,9 +19,20 @@ export const getVault = async (address, contract) =>{
   try {
     if(address && contract) {
       const res = await contract.call("AdminToVaultAddress",[address]);
-      console.log(res);
-    } else {
-      return false
+      if (res != "0x0000000000000000000000000000000000000000") {
+        return {vaultAddress : res, role : 'admin' }
+      } 
+      const res1 = await contract.call("DeveloperToVaultAddress",[address]);
+      if (res != "0x0000000000000000000000000000000000000000") {
+        return {vaultAddress : res1, role : 'developer' }
+      }
+      const res2 = await contract.call("DeveloperToVaultAddress",[address]);
+      if (res != "0x0000000000000000000000000000000000000000") {
+        return {vaultAddress : res2, role : 'developer' }
+      } else {
+        return false
+      }
+        
     }
   } catch (err) {
     console.error("Error in getting vault address : ",err);
