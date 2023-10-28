@@ -7,10 +7,10 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import CreateVault from "./components/CreateVault";
+import CreateDeposit from "./components/CreateDeposit";
 import Protected from "./components/Protected";
 
 function App() {
-	
 	return (
 		<div>
 			<Routes>
@@ -29,6 +29,14 @@ function App() {
 					element={
 						<Protected>
 							<CreateVault />
+						</Protected>
+					}
+				/>
+				<Route
+					path='/deposit'
+					element={
+						<Protected>
+							<CreateDeposit />
 						</Protected>
 					}
 				/>
