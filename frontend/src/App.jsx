@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import CreateVault from "./components/CreateVault";
 import CreateDeposit from "./components/CreateDeposit";
+import Automate from "./components/Automate";
+import DisplayVaults from "./components/DisplayVaults";
 import Protected from "./components/Protected";
 
 function App() {
@@ -40,6 +42,15 @@ function App() {
 						</Protected>
 					}
 				/>
+				<Route
+					path='/automate'
+					element={
+						<Protected>
+							<Automate />
+						</Protected>
+					}
+				/>
+				<Route path='/vaults' element={<DisplayVaults />} />
 			</Routes>
 		</div>
 	);

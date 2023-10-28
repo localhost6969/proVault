@@ -65,3 +65,7 @@ export const getBalance = async (sdk,vaultAddress)=>{
     const balance = await contract.call('getBalance');
     return(parseInt(balance)/1000000000000000000);
 }
+
+export const getAllVaults = async (sdk) =>{
+	
+}

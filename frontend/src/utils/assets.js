@@ -3,6 +3,7 @@ import {ThirdwebSDK} from '@thirdweb-dev/sdk';
 import env from "react-dotenv";
 import { getContract } from "../auth/auth.mjs";
 import VaultAbi from '../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json';
+
 const {VITE_CLIENT_ID} = import.meta.env;
 import { ethers } from "ethers";
 
@@ -10,7 +11,7 @@ export const getAsset = async (contract, position) => {
     try {
         const assetAddress = await contract.call('assetAddress',[position])
         const chainId = await contract.call('chainIdOfAsset', [assetAddress]);
-        const importURl = `/Users/naresh_dev/Developments/Team Code X | Hackverse/proVault/frontend/node_modules/@thirdweb-dev/chains/chains/${chainId}.ts`;
+        const importURl = `../../node_modules/@thirdweb-dev/chains/chains/${chainId}.ts`;
         const dynamicImport = await import(importURl);  /* @vite-ignore */
         console.log(dynamicImport)
         const rpcTemplate = dynamicImport.default.rpc[0];
