@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <BrowserRouter>
       <NextUIProvider>
       <ThirdwebProvider
-        activeChain={Localhost}
+        activeChain={XdcApothemNetwork}
         clientId={import.meta.env.CLIENT_ID}
         supportedWallets={[
           metamaskWallet(),

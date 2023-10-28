@@ -6,7 +6,7 @@ import { Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/login/Login";
 import Dashboard from "./components/Dashboard";
-import {createVault, getVault} from "./utils/vaults" 
+import CreateVault from './components/CreateVault';
 function App() {
 	
 	return (
@@ -15,6 +15,7 @@ function App() {
 				<Route path='/' element={<Home />} />
 				<Route path='/login' element={<Login />} />
 				<Route path='/dashboard' element={<Dashboard />} />
+				<Route path='/create' element={<CreateVault />} />
 			</Routes>
 		</div>
 	);

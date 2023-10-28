@@ -18,8 +18,8 @@ export const createVault = async (ownerAddress, adminAddress, devAddress) =>{
 
 export const getVault = async (address, contract) =>{
   try {
-    if(address) {
-      const res = await contract.call("vaultAddressToAdmin");
+    if(address && contract) {
+      const res = await contract.call("AdminToVaultAddress",[address]);
       console.log(res);
     } else {
       return false

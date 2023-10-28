@@ -34,11 +34,12 @@ contract VaultFactory is Ownable, Pausable{
         admins.push(_admin);
         funder.push(_fund);
         developer.push(_dev);
-
+        
         vaultAddressToAdmin[_vaultAddr] = _admin;
         AdminToVaultAddress[_admin] = _vaultAddr;
         FunderToVaultAddress[_fund] = _vaultAddr;
         DeveloperToVaultAddress[_dev] = _vaultAddr;
+        vaultCount +=1;
     }
 
     
