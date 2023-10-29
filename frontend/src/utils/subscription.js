@@ -17,16 +17,18 @@ export const getSubscriptionWithPosition = async (contract, position) =>{
     try {
         const walletAddress = await contract.call('subscriptionSellers',[position]);
         const subscription = await contract.call('infoOfVault',[walletAddress]);
-        console.log(subscription);
+        console.log(subscription.sellPrice);
         if (parseInt(subscription.tokenId) != 0){
-            const {tokenId, startTime, endTime, isSelling, royaltyPercentage, sellingPrice} = subscription;
+            const {tokenId, startTime, endTime, royaltyPercentage, sellPrice} = subscription;
             const start = new Date(parseInt(startTime));
             const end = new Date(parseInt(endTime));
             let checkSelling = false;
             let checkSellingPrice = 0;
-            if(subscription.isSelling) {
-                checkSelling = subscription.isSelling;
-                checkSelling = parseFloat(sellingPrice).toString()
+
+            const isSelling = await contract.call('isSelling',[walletAddress]);
+            if(isSelling) {
+                checkSelling = isSelling;
+                checkSellingPrice = parseInt(sellPrice)
             }
             return {
                 ownerAddress : walletAddress, 

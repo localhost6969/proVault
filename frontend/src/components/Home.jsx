@@ -17,7 +17,8 @@ function Home() {
 					</div>
 					<div className='flex items-center justify-center'>
 						<p className='flex text-xl mb-8'>
-							Yo Mama you know how me Neruki sei the dance floor baby
+							Trustless technology meets asset distribution: Welcome to the
+							future of self-governing reserves.
 						</p>
 					</div>
 					<div className='flex space-x-4 items-center justify-center'>

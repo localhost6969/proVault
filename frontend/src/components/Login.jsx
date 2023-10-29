@@ -35,11 +35,11 @@ export default function Login() {
 					{/* Left Side - Process Details */}
 					<div className='flex flex-col items-center justify-center flex-1 p-10 bg-opacity-70 backdrop-filter backdrop-blur-md bg-white shadow-md rounded-l-xl'>
 						<h1 className='mb-4 text-4xl font-bold text-secondary-600'>
-							Login Process Details
+							Login to DemocratVault
 						</h1>
 						<p className='text-gray-700'>
-							Provide your credentials to access the system. Lorem ipsum dolor
-							sit amet, consectetur adipiscing elitx.
+							Trustless technology meets asset distribution: Welcome to the
+							future of self-governing reserves.
 						</p>
 					</div>
 

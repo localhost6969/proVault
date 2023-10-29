@@ -14,6 +14,7 @@ import { Spinner } from "@nextui-org/react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { SiBlockchaindotcom } from "react-icons/si";
 import { RiMoneyEuroBoxFill } from "react-icons/ri";
+import { BiCopy } from "react-icons/bi";
 
 import NavBar from "./Navbar";
 import { useAddress, useContract, useSDK } from "@thirdweb-dev/react";
@@ -22,7 +23,13 @@ import { RiBankLine, RiCoinsFill } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault, getBalance } from "../utils/vaults";
 import { getAllAssets, addAsset } from "../utils/assets";
-import { getSubscription, sellingOn, redeemSubscription, purchaseSubscription, createSubscription } from "../utils/subscription";
+import {
+	getSubscription,
+	sellingOn,
+	redeemSubscription,
+	purchaseSubscription,
+	createSubscription,
+} from "../utils/subscription";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
@@ -89,7 +96,7 @@ const Dashboard = () => {
 		}
 	}, [address, contract]);
 	useEffect(()=>{
-		if(!loading) {
+		if(!loading && vault) {
 			getAllAssets(sdk, vault.vaultAddress)
 							.then(res => {
 								setAssets(res);
@@ -135,8 +142,8 @@ const Dashboard = () => {
 	if (loading) {
 		return <Loading />;
 	}
-	
-	const handleSell = async (form)=>{
+
+	const handleSell = async form => {
 		try {
 			form.preventDefault();
 			setLoading(true);
@@ -146,38 +153,40 @@ const Dashboard = () => {
 		} catch (err) {
 			console.log("Error in setting ", err);
 			alert("Error in setting false");
-			setLoading(false)
+			setLoading(false);
 		}
 	}
-	const handleRedeemSubscription = async (form)=>{
+	const handleRedeemSubscription = async ()=>{
 		try {
-			form.preventDefault();
 			setLoading(true)
-			const res = await redeemSubscription(sdk, form.target.price.value);	
+			const res = await redeemSubscription(sdk);	
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in setting ", err);
 			alert("Error in setting false");
 			setLoading(false);
 		}
-	}
-	const handlePurchase = async ()=>{
+	};
+	const handlePurchase = async () => {
 		try {
-			setLoading(true)
-			const res = await createSubscription(sdk, address);	
+			setLoading(true);
+			const res = await createSubscription(sdk, address);
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in purchasing ", err);
 			alert("Error in purchaing false");
 			setLoading(false);
 		}
-	}
+	};
 	return (
 		<>
 			<div className='dashboard-page h-screen'>
 				<NavBar />
 				{openModal && (
-					<form className='z-20 h-full w-full absolute flex backdrop-blur-md' onSubmit={handleSell}>
+					<form
+						className='z-20 h-full w-full absolute flex backdrop-blur-md'
+						onSubmit={handleSell}
+					>
 						<div className='flex w-fit m-auto items-center justify-center relative'>
 							<div className='absolute top-1 right-2 cursor-pointer'>
 								<AiFillCloseCircle
@@ -197,8 +206,8 @@ const Dashboard = () => {
 								/>
 								<Input
 									type='text'
-									label='Royalty Percentage'
-									className='text-white mt-2 rounded-md'
+									label='Royalty Percent'
+									className='text-white rounded-md mt-2'
 									color='secondary'
 									variant='flat'
 									radius='sm'
@@ -220,7 +229,7 @@ const Dashboard = () => {
 							</p> */}
 								<Card className='relative bg-secondary-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col'>
 									<div className='flex items-center mb-4 justify-between'>
-										<div className='flex'>
+										<div className='flex mr-20'>
 											<PiVaultFill className='text-4xl text-gray-100 mr-4' />
 											<h2 className='text-xl font-bold text-white'>
 												Role: {vault.role}
@@ -232,9 +241,17 @@ const Dashboard = () => {
 										</div>
 									</div>
 									<p className='text-gray-400'>Vault Address</p>
-									<p className='text-gray-300'>
-										{truncateMiddle(vault.vaultAddress)}
-									</p>
+									<div className='flex items-center'>
+										<p className='text-gray-300'>
+											{truncateMiddle(vault.vaultAddress)}
+										</p>
+										<BiCopy
+											onClick={() => {
+												navigator.clipboard.writeText(vault.vaultAddress);
+											}}
+											className='text-gray-400 cursor-pointer ml-2'
+										/>
+									</div>
 								</Card>
 							</>
 						) : (
@@ -267,9 +284,7 @@ const Dashboard = () => {
 								</p>
 							</Button>
 						)}
-						{
-							(subscription)  
-							? 
+						{subscription ? (
 							<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
 							<div className='flex items-center justify-between'>
 								<div>
@@ -305,27 +320,28 @@ const Dashboard = () => {
 											{subscription.endDate}
 										</p>
 									</div>
-									<Button className='w-full mt-2' onClick={handleRedeemSubscription}>Redeem</Button>
 								</div>
-							</div>
-						</Card>
-							: 
-								vault && <Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
-								<div className='flex items-center justify-between'>
-									<div>
-										<div className=' flex items-center justify-center mb-3 '>
-											<h2 className='text-2xl font-bold  text-white '>
-												Buy NFT Subscription
-											</h2>
-											<p className='text-white'>Total price: 10 XDC</p>
-										</div>
-										<Button className='w-full' onClick={handlePurchase}>Buy Subscription</Button>
-									</div>
 								</div>
 							</Card>
-							
-							
-						}
+						) : (
+							vault && (
+								<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
+									<div className='flex items-center justify-between'>
+										<div className='mt-5'>
+											<div className=' flex items-center justify-center mb-5 '>
+												<h2 className='text-2xl font-bold  text-white '>
+													Buy NFT Subscription
+												</h2>
+												<p className='text-white'>Total price: 10 XDC</p>
+											</div>
+											<Button className='w-full' onClick={handlePurchase}>
+												Buy Subscription
+											</Button>
+										</div>
+									</div>
+								</Card>
+							)
+						)}
 					</div>
 
 					{vault && (
@@ -391,9 +407,17 @@ const Dashboard = () => {
 								>
 									{/* Card content goes here */}
 									<div className='flex items-center justify-between'>
-										<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
-											Asset Address: {truncateMiddle(item.assetAddress)}
-										</h2>
+										<div className='flex items-center'>
+											<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
+												Asset Address: {truncateMiddle(item.assetAddress)}
+											</h2>
+											<BiCopy
+												onClick={() => {
+													navigator.clipboard.writeText(item.assetAddress);
+												}}
+												className='text-gray-400 text-2xl cursor-pointer ml-2'
+											/>
+										</div>
 										<div>
 											<p className='text-blue-700 font-bold'>
 												<SiBlockchaindotcom className='inline-block mr-2' />
