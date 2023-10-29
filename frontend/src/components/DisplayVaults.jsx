@@ -5,26 +5,33 @@ import NavBar from "./Navbar";
 import { useEffect, useState } from "react";
 import { getAllVaults } from "../utils/vaults";
 import { useSDK } from "@thirdweb-dev/react";
+import Loading from "./Loading";
 const DisplayVaults = () => {
 	const [vaults, setVaults] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const sdk = useSDK();
-	useEffect(()=>{
-		if(sdk)
-		getAllVaults(sdk)
-		.then(res=>{
-			setVaults(res);
-		})
-		.catch(err=>{
-			console.log('Error in fetching all vaults: ', err)
-		});
-		
-	},[sdk]);
+	useEffect(() => {
+		if (sdk)
+			getAllVaults(sdk)
+				.then(res => {
+					setVaults(res);
+				})
+				.catch(err => {
+					console.log("Error in fetching all vaults: ", err);
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+	}, [sdk]);
+	if (loading) {
+		return <Loading />;
+	}
 	return (
 		<>
 			<div className='displayvaults-page h-full'>
 				<NavBar />
 				<div className=' px-60 py-20'>
-					<div className='grid grid-cols-1 sm:grid-cols-2 gap-1'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 gap-1 mb-[40rem]'>
 						{vaults.map(vault => (
 							<Card className='relative bg-secondary-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md m-5 h-50 w-50 flex flex-col  cursor-pointer'>
 								<div className='flex items-center mb-4 justify-between'>

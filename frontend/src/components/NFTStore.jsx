@@ -71,7 +71,7 @@ const NFTStore = () => {
 			<div className='displayvaults-page h-full'>
 				<NavBar />
 				<div className=' px-60 py-20'>
-					<div className='grid grid-cols-1 sm:grid-cols-2 gap-1'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 gap-1 mb-[40rem]'>
 						{cardData.map(card => (
 							<Card className='relative bg-gray-600 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md m-5 h-50 w-50 flex flex-col  cursor-pointer'>
 								{/* <div className='flex items-center mb-4 justify-between'> */}
