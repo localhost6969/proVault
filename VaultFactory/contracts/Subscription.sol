@@ -2,13 +2,13 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+// import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 import "./Counters.sol";
 
 
-contract Subscription is ERC721, Ownable, ERC721Burnable{
+contract Subscription is Ownable{
     
     using Counters for Counters.Counter;
 
@@ -31,7 +31,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
     mapping (address => subscriptionInfo) public infoOfVault;
     mapping (address => bool) public isSelling;
 
-    constructor() ERC721("Subscription", "SUB") Ownable(msg.sender) {
+    constructor() Ownable(msg.sender) {
         _tokenIdCounter.increment();
     }
 
@@ -54,7 +54,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
 
     function insiderMint(address user) public {
         uint256 tokenId = _tokenIdCounter.current();
-        _mint(user, tokenId);
+        // _mint(user, tokenId);
         _tokenIdCounter.increment();
 
         subscriptionHolders.push(user);
@@ -77,7 +77,7 @@ contract Subscription is ERC721, Ownable, ERC721Burnable{
             }
         }
 
-        _burn(infoOfVault[user].tokenId);
+        // _burn(infoOfVault[user].tokenId);
         delete infoOfVault[user];
         delete isSelling[user];
     }
