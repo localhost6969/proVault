@@ -256,7 +256,7 @@ const Dashboard = () => {
 											</h2>
 											<p className='text-white'>Total price: 10 XDC</p>
 										</div>
-										<Button className='w-full' onClick={createSubscription}>Buy Subscription</Button>
+										<Button className='w-full' onClick={handlePurchase}>Buy Subscription</Button>
 									</div>
 								</div>
 							</Card>
