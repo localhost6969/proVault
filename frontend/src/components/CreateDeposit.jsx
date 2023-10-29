@@ -12,6 +12,8 @@ import { getVault } from "../utils/vaults";
 import { useState, useEffect } from "react";
 import VaultAbi from "../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json";
 import Loading from "./Loading";
+import confetti from 'canvas-confetti';
+
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 const CreateDeposit = () => {
@@ -36,6 +38,7 @@ const CreateDeposit = () => {
 				})
 				.finally(() => {
 					setLoading(false);
+
 				});
 		}
 	}, [address, contract]);
@@ -44,9 +47,9 @@ const CreateDeposit = () => {
 	}
 	return (
 		<>
-			<div className='createvault-page h-screen'>
-				<div className='p-20'>
-					<div className='bg-secondary-500 p-10 backdrop-blur-md bg-opacity-70 rounded-xl'>
+			<div className='createvault-page flex justify-center items-center h-screen'>
+				<div className='p-20 '>
+					<div className='bg-secondary-500 m-auto p-10 backdrop-blur-md w-fit bg-opacity-70 rounded-xl'>
 						{vaultAddress && (
 							<div className='mt-4 mb-4 '>
 								<div className='flex items-center'>
@@ -104,14 +107,16 @@ const CreateDeposit = () => {
 };
 
 function TransactionButton(props) {
+	const handleConfetti = () => {
+		confetti();
+	}
 	const sdk = useSDK();
 	const initiateTransfer = () => {
-		props.setLoadingTransaction(true);
+		props.setLoadingTransaction(true); 
 		const result = sdk.wallet
 			.transfer(props.vaultAddress, props.amount)
 			.then(res => {
-				alert("Deposit successful");
-				console.log(result);
+				props.setResult(true);
 			})
 			.catch(err => {
 				console.log(err);
@@ -122,6 +127,8 @@ function TransactionButton(props) {
 	};
 	console.log(props.vaultAddress);
 	return (
+		<>
+		{props.result && <div>{handleConfetti()}</div>}
 		<Button
 			size='lg'
 			variant='solid'
@@ -131,6 +138,7 @@ function TransactionButton(props) {
 		>
 			Send Transaction
 		</Button>
+		</>
 	);
 }
 
