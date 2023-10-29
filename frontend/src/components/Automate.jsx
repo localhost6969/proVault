@@ -33,7 +33,7 @@ const Automate = () => {
 		<>
 			<div className='automate-page h-screen'>
 				<NavBar />
-				<div className='flex items-center justify-center h-3/4'>
+				<div className='flex items-center justify-center h-3/4 mt-20'>
 					<div className='bg-secondary-500 backdrop-blur-md bg-opacity-50 p-20 rounded-lg'>
 						<label className='block text-5xl text-gray-200 font-bold mb-2'>
 							Select your convenient interval
@@ -45,6 +45,14 @@ const Automate = () => {
 						<Input
 							type='text'
 							label='Vault Address'
+							className='mt-10'
+							color='secondary'
+							variant='flat'
+							radius='sm'
+						></Input>
+						<Input
+							type='text'
+							label='Amount'
 							className='mt-10'
 							color='secondary'
 							variant='flat'
@@ -88,6 +96,9 @@ const Automate = () => {
 							</Button>
 							<Button size='lg' onClick={stopApiCalls}>
 								Stop Automate
+							</Button>
+							<Button size='lg' onClick={stopApiCalls}>
+								Start Once
 							</Button>
 						</div>
 					</div>
