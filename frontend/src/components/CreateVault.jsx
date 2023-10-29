@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useAddress, useContract } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 import { createVault } from "../utils/vaults";
+import confetti from 'canvas-confetti';
 
 const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS } = import.meta.env;
 const CreateVault = () => {
@@ -33,6 +34,7 @@ const CreateVault = () => {
 			console.log(err);
 		}
 	};
+	
 	return (
 		<>
 			{navigate && <Navigate to='/dashboard' replace />}
@@ -91,12 +93,14 @@ const CreateVault = () => {
 								/>
 							</div>
 						</div>
+						
 						<Button
 							variant='solid'
 							color='success'
 							radius='sm'
 							size='lg'
 							type='submit'
+
 						>
 							Create Vault
 						</Button>
