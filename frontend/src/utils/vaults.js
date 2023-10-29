@@ -8,7 +8,7 @@ import {
 import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import env from "react-dotenv";
 import { getContract, isLoggedIn } from "../auth/auth.mjs";
-import VaultAbi from '../artifacts/Vault.json' 
+import VaultAbi from '../artifacts/contracts/Vault.sol/Vault.json' 
 
 const {VITE_CONTRACT_ADDRESS, VITE_SUBSCRIPTION} = import.meta.env;
 

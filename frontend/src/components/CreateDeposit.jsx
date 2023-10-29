@@ -10,7 +10,7 @@ import {
 } from "@thirdweb-dev/react";
 import { getVault } from "../utils/vaults";
 import { useState, useEffect } from "react";
-import VaultAbi from "../../../VaultFactory/artifacts/contracts/Vault.sol/Vault.json";
+import VaultAbi from "../artifacts/contracts/Vault.sol/Vault.json";
 import Loading from "./Loading";
 import confetti from 'canvas-confetti';
 
