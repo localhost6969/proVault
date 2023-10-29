@@ -4,7 +4,7 @@ import Subscription from '../../../VaultFactory/artifacts/contracts/Subscription
 export const createSubscription = async (sdk, address)=>{
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
-        const res = await contract.call('mintSubscription', [address], {value:'10'});
+        const res = await contract.call('mintSubscription', [address], {value:10});
         return res;
     } catch (err) {
         console.log("Error in creating subscription: ", err);
