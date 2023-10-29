@@ -20,7 +20,6 @@ import {
 	Mumbai,
 	Localhost,
 } from "@thirdweb-dev/chains";
-import env from "react-dotenv";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
