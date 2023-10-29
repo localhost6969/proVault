@@ -1,5 +1,5 @@
 const {VITE_SUBSCRIPTION} = import.meta.env;
-import Subscription from '../../../VaultFactory/artifacts/contracts/Subscription.sol/Subscription.json';
+import Subscription from '../artifacts/Subscription.json';
 import { ethers } from 'ethers';
 
 export const createSubscription = async (sdk, address)=>{
