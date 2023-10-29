@@ -12,6 +12,8 @@ import Loading from "./Loading";
 import Popup from "reactjs-popup";
 import { Spinner } from "@nextui-org/react";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { SiBlockchaindotcom } from "react-icons/si";
+import { RiMoneyEuroBoxFill } from "react-icons/ri";
 
 import NavBar from "./Navbar";
 import { useAddress, useContract, useSDK } from "@thirdweb-dev/react";
@@ -22,6 +24,17 @@ import { getVault, getBalance } from "../utils/vaults";
 import { getAllAssets, addAsset } from "../utils/assets";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
+
+const truncateMiddle = (str, startLength = 8, endLength = 4) => {
+	if (str.length <= startLength + endLength) {
+		return str;
+	}
+
+	const start = str.slice(0, startLength);
+	const end = str.slice(-endLength);
+
+	return `${start}....${end}`;
+};
 
 const Dashboard = () => {
 	const deposit = () => {
@@ -65,11 +78,22 @@ const Dashboard = () => {
 		}
 	}, [address, contract]);
 	const addNewAsset = async form => {
-		form.preventDefault();
-		const assetAddress = form.target.assetAddress.value;
-		const chainId = form.target.chainId.value;
-		const res = await addAsset(sdk, assetAddress, chainId, vault.vaultAddress);
-		console.log(res);
+		try {
+			form.preventDefault();
+			const assetAddress = form.target.assetAddress.value;
+			const chainId = form.target.chainId.value;
+			const res = await addAsset(
+				sdk,
+				assetAddress,
+				chainId,
+				vault.vaultAddress
+			);
+			window.location.reload();
+			console.log(res);
+		} catch (err) {
+			console.log(err);
+			alert("Error adding asset");
+		}
 	};
 	if (loading) {
 		return <Loading />;
@@ -125,7 +149,9 @@ const Dashboard = () => {
 										</div>
 									</div>
 									<p className='text-gray-400'>Vault Address</p>
-									<p className='text-gray-300'>{vault.vaultAddress}</p>
+									<p className='text-gray-300'>
+										{truncateMiddle(vault.vaultAddress)}
+									</p>
 								</Card>
 							</>
 						) : (
@@ -214,38 +240,46 @@ const Dashboard = () => {
 
 					{vault && (
 						<div className='flex flex-col items-center h-3/4 bg-opacity-60 bg-white shadow-md rounded-xl p-8 overflow-y-auto max-h-full cards-container mt-20'>
-							<div className='flex items-center justify-between mb-4'>
-								<form className='flex space-x-4' onSubmit={addNewAsset}>
-									<Input
-										type='text'
-										label='Asset address'
-										className='text-white rounded-md'
-										color='secondary'
-										variant='flat'
-										radius='sm'
-										name='assetAddress'
-									/>
-									<Input
-										type='text'
-										label='Chain id'
-										className='text-white rounded-md'
-										color='secondary'
-										variant='flat'
-										radius='sm'
-										name='chainId'
-									/>
-									<Button
-										// className='text-black text-tiny bg-black/20'
-										variant='flat'
-										color='secondary'
-										radius='sm'
-										size='lg'
-										border='secondary'
-										type='submit'
-									>
-										Add asset
-									</Button>
-								</form>
+							<div className='flex justify-between w-full'>
+								<Card
+									radius='sm'
+									className='py-6 rounded-md mr-2 p-4 h-fit bg-transparent border border-green-700 shadow-lg '
+								>
+									<h1 className='text-green-700 font-bold'>KYC ENABLED</h1>
+								</Card>
+								<div className='flex items-center justify-between mb-4'>
+									<form className='flex space-x-4' onSubmit={addNewAsset}>
+										<Input
+											type='text'
+											label='Asset address'
+											className='text-white rounded-md'
+											color='secondary'
+											variant='flat'
+											radius='sm'
+											name='assetAddress'
+										/>
+										<Input
+											type='text'
+											label='Chain id'
+											className='text-white rounded-md'
+											color='secondary'
+											variant='flat'
+											radius='sm'
+											name='chainId'
+										/>
+										<Button
+											// className='text-black text-tiny bg-black/20'
+											variant='flat'
+											color='secondary'
+											radius='sm'
+											size='lg'
+											border='secondary'
+											type='submit'
+										>
+											Add asset
+										</Button>
+									</form>
+								</div>
 							</div>
 							{loadingAssets && (
 								<div className='flex items-center justify-center p-10 h-full'>
@@ -266,11 +300,21 @@ const Dashboard = () => {
 									className='bg-white p-6 mb-4 rounded-md shadow-md w-full'
 								>
 									{/* Card content goes here */}
-									<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
-										{item.assetAddress}
-									</h2>
-									<p className='text-gray-700'>{item.walletBalance}</p>
-									<p className='text-gray-700'>{item.networkName}</p>
+									<div className='flex items-center justify-between'>
+										<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
+											Asset Address: {truncateMiddle(item.assetAddress)}
+										</h2>
+										<div>
+											<p className='text-blue-700 font-bold'>
+												<SiBlockchaindotcom className='inline-block mr-2' />
+												{item.networkName}
+											</p>
+											<p className='text-green-700'>
+												<RiMoneyEuroBoxFill className='inline-block mr-1' />
+												{item.walletBalance}
+											</p>
+										</div>
+									</div>
 								</div>
 							))}
 						</div>

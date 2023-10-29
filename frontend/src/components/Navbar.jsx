@@ -26,11 +26,6 @@ export default function NavBar() {
 			</NavbarBrand>
 			<NavbarContent className='hidden sm:flex gsp-4 ml-20' justify='center'>
 				<NavbarItem>
-					<Link color='foreground' to='/'>
-						Subscriptions
-					</Link>
-				</NavbarItem>
-				<NavbarItem>
 					<Link color='foreground' to='/dashboard'>
 						Dashboard
 					</Link>

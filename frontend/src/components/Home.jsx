@@ -11,13 +11,15 @@ function Home() {
 			<div className='flex items-center justify-center h-full text-white'>
 				<div>
 					<div className='flex items-center justify-center'>
-						<h1 className='text-8xl font-bold mb-4'>Pro</h1>
+						<h1 className='text-8xl font-bold mb-4'>Democrat</h1>
 						<SiVaultwarden className='text-8xl mb-4' />
 						<h1 className='text-8xl font-bold mb-4'>ault</h1>
 					</div>
-					<p className='text-xl mb-8'>
-						Yo Mama you know how me Neruki sei the dance floor baby
-					</p>
+					<div className='flex items-center justify-center'>
+						<p className='flex text-xl mb-8'>
+							Yo Mama you know how me Neruki sei the dance floor baby
+						</p>
+					</div>
 					<div className='flex space-x-4 items-center justify-center'>
 						<Link to='/login'>
 							<Button className='bg-white text-blue-500 px-6 py-3 rounded-full font-bold hover:bg-blue-500 hover:text-white transition duration-300'>
