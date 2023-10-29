@@ -142,6 +142,7 @@ const Dashboard = () => {
 			setLoading(true);
 			const res = await sellingOn(sdk, address, form.target.price.value, form.target.royalty.value);
 			setLoading(false);
+			setOpenModal(false);
 		} catch (err) {
 			console.log("Error in setting ", err);
 			alert("Error in setting false");
