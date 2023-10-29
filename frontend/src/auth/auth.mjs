@@ -10,7 +10,3 @@ export const getContract = ()=>{
         return null
     }
 }
-
-export const getSDK = new ThirdwebSDK(31337, {
-    clientId : import.meta.env.CLIENT_ID
-});

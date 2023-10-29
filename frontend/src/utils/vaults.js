@@ -1,13 +1,3 @@
-import {
-	useContractWrite,
-	useContract,
-	Web3Button,
-	useAddress,
-	useContractRead,
-} from "@thirdweb-dev/react";
-import { ThirdwebSDK } from "@thirdweb-dev/sdk";
-import env from "react-dotenv";
-import { getContract, isLoggedIn } from "../auth/auth.mjs";
 import VaultAbi from '../artifacts/contracts/Vault.sol/Vault.json' 
 
 const {VITE_CONTRACT_ADDRESS, VITE_SUBSCRIPTION} = import.meta.env;
