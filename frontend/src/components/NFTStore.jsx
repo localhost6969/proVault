@@ -46,35 +46,35 @@ const NFTStore = () => {
 											<span className='text-gray-800 font-light'>
 												Subscription:
 											</span>
-											#{card.subscription}
+											#{card.tokenId}
 										</h2>
 										<h2 className='text-md font-bold text-gray-800'>
 											<span className='text-gray-800 font-light'>Total:</span>#
-											{card.total}
+											{parseInt(card.sellingPrice) + (parseInt(card.sellingPrice)* parseInt(card.royaltyPercentage)) }
 										</h2>
 									</div>
 									<p className='text-md  text-white'>
 										<span className='text-gray-400 font-light'>Price: </span>
-										{card.price}
+										{card.sellingPrice}
 										<p className='text-md  text-white'>
 											<span className='text-gray-400 font-light'>
-												Address:{" "}
+												Address:
 											</span>
 											{card.ownerAddress}
 										</p>
 									</p>
 									<p className='text-md  text-white'>
 										<span className='text-gray-400 font-light'>Royalty: </span>
-										{card.royalty}
+										{card.royaltyPercentage}
 									</p>
 									<div className='flex justify-between'>
 										<p className='text-md  text-white'>
 											<span className='text-gray-400 font-light'>Start: </span>
-											{card.start}
+											{card.startDate}
 										</p>
 										<p className='text-md  text-white'>
 											<span className='text-gray-400 font-light'>End: </span>
-											{card.end}
+											{card.endDate}
 										</p>
 									</div>
 								</div>

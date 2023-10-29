@@ -1,10 +1,11 @@
 const {VITE_SUBSCRIPTION} = import.meta.env;
 import Subscription from '../../../VaultFactory/artifacts/contracts/Subscription.sol/Subscription.json';
+import { ethers } from 'ethers';
 
 export const createSubscription = async (sdk, address)=>{
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
-        const res = await contract.call('mintSubscription', [address]);
+        const res = await contract.call('mintSubscription', [address], {value: ethers.utils.parseEther("10")});
         return res;
     } catch (err) {
         console.log("Error in creating subscription: ", err);
@@ -17,7 +18,28 @@ export const getSubscriptionWithPosition = async (contract, position) =>{
         const walletAddress = await contract.call('subscriptionSellers',[position]);
         const subscription = await contract.call('infoOfVault',[walletAddress]);
         console.log(subscription);
-        return subscription
+        if (parseInt(subscription.tokenId) != 0){
+            const {tokenId, startTime, endTime, isSelling, royaltyPercentage, sellingPrice} = subscription;
+            const start = new Date(parseInt(startTime));
+            const end = new Date(parseInt(endTime));
+            let checkSelling = false;
+            let checkSellingPrice = 0;
+            if(subscription.isSelling) {
+                checkSelling = subscription.isSelling;
+                checkSelling = parseFloat(sellingPrice).toString()
+            }
+            return {
+                ownerAddress : walletAddress, 
+                tokenId: parseInt(tokenId),
+                startDate: `${start.toLocaleString()}`,
+                endDate: `${end.toLocaleString()}`,
+                royaltyPercentage : parseInt(royaltyPercentage),
+                isSelling : checkSelling,
+                sellingPrice : checkSellingPrice
+            }
+        } else {
+           return null
+        }
     } catch (err) {
         console.log('Error in getting the subscription: ', err);
         return null
@@ -44,7 +66,7 @@ export const getAllSellingSubscriptions = async (sdk) =>{
 export const purchaseSubscription = async (sdk, walletAddress, price) => {
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
-        const res = await contract.call('purchase', [walletAddress], {value : price});
+        const res = await contract.call('purchase', [walletAddress], {value : ethers.utils.parseEther(price)});
         return res;
     } catch (err) {
         console.error("Purchase failed : ", err);
@@ -52,10 +74,10 @@ export const purchaseSubscription = async (sdk, walletAddress, price) => {
     } 
 }
 
-export const sellingOn = async (sdk, walletAddress, price) => {
+export const sellingOn = async (sdk, walletAddress, price, royaltyPercentage) => {
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
-        const res = await contract.call('sellingOn', [walletAddress, price]);
+        const res = await contract.call('sellingOn', [walletAddress, parseInt(price), parseInt(royaltyPercentage)]);
         return true;
     } catch (err) {
         console.log('Error in setting sellingOn : ', err);
@@ -89,9 +111,29 @@ export const getSubscription = async (sdk, walletAddress) =>{
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
         const subscription = await contract.call('infoOfVault',[walletAddress]);
-        console.log(parseInt(subscription[0]));
-        if (parseInt(subscription[0]) != 0)
-        return subscription
+        console.log(subscription.isSelling);
+        if (parseInt(subscription.tokenId) != 0){
+            const {tokenId, startTime, endTime, isSelling, royaltyPercentage, SellingPrice} = subscription;
+            const start = new Date(parseInt(startTime));
+            const end = new Date(parseInt(endTime));
+            let checkSelling = false;
+            let checkSellingPrice = 0;
+            if(subscription.isSelling) {
+                checkSelling = subscription.isSelling;
+                checkSelling = parseFloat(SellingPrice/1e8).toString()
+            }
+            return {
+                tokenId: parseInt(tokenId),
+                startDate: `${start.toLocaleString()}`,
+                endDate: `${end.toLocaleString()}`,
+                royaltyPercentage : parseInt(royaltyPercentage),
+                isSelling : checkSelling,
+                SellingPrice : checkSellingPrice
+            }
+        } else {
+           return null
+        }
+        
     } catch (err) {
         console.log("Failed to fetch subscription info", err);
         return null;

@@ -30,7 +30,6 @@ const truncateMiddle = (str, startLength = 8, endLength = 4) => {
 	if (str.length <= startLength + endLength) {
 		return str;
 	}
-
 	const start = str.slice(0, startLength);
 	const end = str.slice(-endLength);
 
@@ -63,7 +62,10 @@ const Dashboard = () => {
 								console.log(res);
 								getSubscription(sdk, address).then(res=>{
 									if(res){
-										setSubscription(subscription);
+										setSubscription(res);
+										if(res.isSelling) {
+											setSelected(true)
+										}
 									} 
 								}).catch(err=>{
 									console.log(err)
@@ -74,9 +76,7 @@ const Dashboard = () => {
 							.catch(err => {
 								console.error("Error getting assets", err);
 							})
-							.finally(() => {
-								setLoadingAssets(false);
-							});
+							
 						setVautAddress(res);
 					}
 				})
@@ -88,6 +88,32 @@ const Dashboard = () => {
 				});
 		}
 	}, [address, contract]);
+	useEffect(()=>{
+		if(!loading) {
+			getAllAssets(sdk, vault.vaultAddress)
+							.then(res => {
+								setAssets(res);
+								console.log(res);
+								getSubscription(sdk, address).then(res=>{
+									if(res){
+										setSubscription(res);
+										if(res.isSelling) {
+											setSelected(true);
+										}
+									} 
+								}).catch(err=>{
+									console.log(err)
+
+								}).finally(()=>{
+									setLoadingAssets(false);
+								})
+							})
+							.catch(err => {
+								console.error("Error getting assets", err);
+							})
+							
+		}
+	},[loading]);
 	const addNewAsset = async form => {
 		try {
 			form.preventDefault();
@@ -114,7 +140,7 @@ const Dashboard = () => {
 		try {
 			form.preventDefault();
 			setLoading(true);
-			const res = await sellingOn(sdk, address, form.target.price.value);
+			const res = await sellingOn(sdk, address, form.target.price.value, form.target.royalty.value);
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in setting ", err);
@@ -122,10 +148,11 @@ const Dashboard = () => {
 			setLoading(false)
 		}
 	}
-	const handleRedeemSubscription = async ()=>{
+	const handleRedeemSubscription = async (form)=>{
 		try {
+			form.preventDefault();
 			setLoading(true)
-			const res = await redeemSubscription(sdk);	
+			const res = await redeemSubscription(sdk, form.target.price.value);	
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in setting ", err);
@@ -166,6 +193,15 @@ const Dashboard = () => {
 									variant='flat'
 									radius='sm'
 									name='price'
+								/>
+								<Input
+									type='text'
+									label='Royalty Percentage'
+									className='text-white mt-2 rounded-md'
+									color='secondary'
+									variant='flat'
+									radius='sm'
+									name='royalty'
 								/>
 								<Button className='w-full mt-5' color='primary' type="submit">
 									Sell Subscription
@@ -261,11 +297,11 @@ const Dashboard = () => {
 									<div className='flex justify-between mt-2'>
 										<p className='text-md  text-white mr-10'>
 											<span className='text-white font-bold mr-1'>Start: </span>
-											1/1/2021
+											{subscription.startDate}
 										</p>
 										<p className='text-md  text-white'>
 											<span className='text-white font-bold  mr-1'>End: </span>
-											1/1/2022
+											{subscription.endDate}
 										</p>
 									</div>
 									<Button className='w-full mt-2' onClick={handleRedeemSubscription}>Redeem</Button>
