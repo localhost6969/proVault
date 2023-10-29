@@ -9,7 +9,7 @@ import {
 	Switch,
 } from "@nextui-org/react";
 import Loading from "./Loading";
-import Popup from "reactjs-popup";
+
 import { Spinner } from "@nextui-org/react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { SiBlockchaindotcom } from "react-icons/si";
@@ -22,6 +22,7 @@ import { RiBankLine, RiCoinsFill } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault, getBalance } from "../utils/vaults";
 import { getAllAssets, addAsset } from "../utils/assets";
+import { getSubscription, sellingOn, redeemSubscription, purchaseSubscription, createSubscription } from "../utils/subscription";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
@@ -48,6 +49,7 @@ const Dashboard = () => {
 	const [vault, setVautAddress] = useState();
 	const address = useAddress();
 	const [assets, setAssets] = useState([]);
+	const [subscription, setSubscription] = useState();
 	const sdk = useSDK();
 	useEffect(() => {
 		if (address !== undefined && !isLoading) {
@@ -59,6 +61,15 @@ const Dashboard = () => {
 							.then(res => {
 								setAssets(res);
 								console.log(res);
+								getSubscription(sdk, address).then(res=>{
+									if(res){
+										setSubscription(subscription);
+									} 
+								}).catch(err=>{
+									console.log(err)
+								}).finally(()=>{
+									setLoadingAssets(false);
+								})
 							})
 							.catch(err => {
 								console.error("Error getting assets", err);
@@ -98,12 +109,47 @@ const Dashboard = () => {
 	if (loading) {
 		return <Loading />;
 	}
+	
+	const handleSell = async (form)=>{
+		try {
+			form.preventDefault();
+			setLoading(true);
+			const res = await sellingOn(sdk, address, form.target.price.value);
+			setLoading(false);
+		} catch (err) {
+			console.log("Error in setting ", err);
+			alert("Error in setting false");
+			setLoading(false)
+		}
+	}
+	const handleRedeemSubscription = async ()=>{
+		try {
+			setLoading(true)
+			const res = await redeemSubscription(sdk);	
+			setLoading(false);
+		} catch (err) {
+			console.log("Error in setting ", err);
+			alert("Error in setting false");
+			setLoading(false);
+		}
+	}
+	const handlePurchase = async ()=>{
+		try {
+			setLoading(true)
+			const res = await createSubscription(sdk, address);	
+			setLoading(false);
+		} catch (err) {
+			console.log("Error in purchasing ", err);
+			alert("Error in purchaing false");
+			setLoading(false);
+		}
+	}
 	return (
 		<>
 			<div className='dashboard-page h-screen'>
 				<NavBar />
 				{openModal && (
-					<div className='z-20 h-full w-full absolute flex backdrop-blur-md'>
+					<form className='z-20 h-full w-full absolute flex backdrop-blur-md' onSubmit={handleSell}>
 						<div className='flex w-fit m-auto items-center justify-center relative'>
 							<div className='absolute top-1 right-2 cursor-pointer'>
 								<AiFillCloseCircle
@@ -119,14 +165,14 @@ const Dashboard = () => {
 									color='secondary'
 									variant='flat'
 									radius='sm'
-									name='search'
+									name='price'
 								/>
-								<Button className='w-full mt-5' color='primary'>
+								<Button className='w-full mt-5' color='primary' type="submit">
 									Sell Subscription
 								</Button>
 							</div>
 						</div>
-					</div>
+					</form>
 				)}
 				<div className='mx-60'>
 					<div className='flex items-center p-10'>
@@ -145,7 +191,7 @@ const Dashboard = () => {
 										</div>
 										<div className='flex items-center justify-center'>
 											<RiCoinsFill className='text-3xl text-green-500 mr-2' />
-											<p className='text-green-500'>Funds: {vault.balance}</p>
+											<p className='text-green-500'>TVL: {vault.balance}</p>
 										</div>
 									</div>
 									<p className='text-gray-400'>Vault Address</p>
@@ -184,7 +230,10 @@ const Dashboard = () => {
 								</p>
 							</Button>
 						)}
-						<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
+						{
+							(subscription)  
+							? 
+							<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
 							<div className='flex items-center justify-between'>
 								<div>
 									<div className=' flex justify-between '>
@@ -192,7 +241,7 @@ const Dashboard = () => {
 											<span className='text-white font-bold  mr-1'>
 												Subscription:
 											</span>
-											1
+											{subscription?.tokenId}
 										</h2>
 										<h2 className='flex items-center font-bold justify-center text-md  text-white'>
 											<span className='text-white  mr-1'>Sell: </span>
@@ -219,23 +268,27 @@ const Dashboard = () => {
 											1/1/2022
 										</p>
 									</div>
-									<Button className='w-full mt-2'>Redeem</Button>
+									<Button className='w-full mt-2' onClick={handleRedeemSubscription}>Redeem</Button>
 								</div>
 							</div>
 						</Card>
-						<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
-							<div className='flex items-center justify-between'>
-								<div>
-									<div className=' flex items-center justify-center mb-3 '>
-										<h2 className='text-2xl font-bold  text-white '>
-											Buy NFT Subscription
-										</h2>
-										<p className='text-white'>Total price: 500</p>
+							: 
+								vault && <Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
+								<div className='flex items-center justify-between'>
+									<div>
+										<div className=' flex items-center justify-center mb-3 '>
+											<h2 className='text-2xl font-bold  text-white '>
+												Buy NFT Subscription
+											</h2>
+											<p className='text-white'>Total price: 10 XDC</p>
+										</div>
+										<Button className='w-full' onClick={createSubscription}>Buy Subscription</Button>
 									</div>
-									<Button className='w-full'>Buy Subscription</Button>
 								</div>
-							</div>
-						</Card>
+							</Card>
+							
+							
+						}
 					</div>
 
 					{vault && (
