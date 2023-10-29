@@ -52,10 +52,10 @@ export const purchaseSubscription = async (sdk, walletAddress, price) => {
     } 
 }
 
-export const sellingOn = async (sdk, walletAddress) => {
+export const sellingOn = async (sdk, walletAddress, price) => {
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
-        const res = await contract.call('sellingOn', [walletAddress]);
+        const res = await contract.call('sellingOn', [walletAddress, price]);
         return true;
     } catch (err) {
         console.log('Error in setting sellingOn : ', err);
@@ -74,7 +74,7 @@ export const sellingOff = async (sdk, walletAddress) =>{
     }
 }
 
-export const redeemSubscription  = async (sdk, walletAddress) => {
+export const redeemSubscription  = async (sdk) => {
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
         const res = await contract.call('redeemRoyalty');
@@ -89,7 +89,8 @@ export const getSubscription = async (sdk, walletAddress) =>{
     try {
         const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
         const subscription = await contract.call('infoOfVault',[walletAddress]);
-        console.log(subscription);
+        console.log(parseInt(subscription[0]));
+        if (parseInt(subscription[0]) != 0)
         return subscription
     } catch (err) {
         console.log("Failed to fetch subscription info", err);
