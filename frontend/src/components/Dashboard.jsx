@@ -14,6 +14,7 @@ import { Spinner } from "@nextui-org/react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { SiBlockchaindotcom } from "react-icons/si";
 import { RiMoneyEuroBoxFill } from "react-icons/ri";
+import { BiCopy } from "react-icons/bi";
 
 import NavBar from "./Navbar";
 import { useAddress, useContract, useSDK } from "@thirdweb-dev/react";
@@ -22,7 +23,13 @@ import { RiBankLine, RiCoinsFill } from "react-icons/ri";
 import { PiVaultFill } from "react-icons/pi";
 import { getVault, getBalance } from "../utils/vaults";
 import { getAllAssets, addAsset } from "../utils/assets";
-import { getSubscription, sellingOn, redeemSubscription, purchaseSubscription, createSubscription } from "../utils/subscription";
+import {
+	getSubscription,
+	sellingOn,
+	redeemSubscription,
+	purchaseSubscription,
+	createSubscription,
+} from "../utils/subscription";
 
 const { VITE_CONTRACT_ADDRESS } = import.meta.env;
 
@@ -61,15 +68,18 @@ const Dashboard = () => {
 							.then(res => {
 								setAssets(res);
 								console.log(res);
-								getSubscription(sdk, address).then(res=>{
-									if(res){
-										setSubscription(subscription);
-									} 
-								}).catch(err=>{
-									console.log(err)
-								}).finally(()=>{
-									setLoadingAssets(false);
-								})
+								getSubscription(sdk, address)
+									.then(res => {
+										if (res) {
+											setSubscription(subscription);
+										}
+									})
+									.catch(err => {
+										console.log(err);
+									})
+									.finally(() => {
+										setLoadingAssets(false);
+									});
 							})
 							.catch(err => {
 								console.error("Error getting assets", err);
@@ -109,8 +119,8 @@ const Dashboard = () => {
 	if (loading) {
 		return <Loading />;
 	}
-	
-	const handleSell = async (form)=>{
+
+	const handleSell = async form => {
 		try {
 			form.preventDefault();
 			setLoading(true);
@@ -119,37 +129,40 @@ const Dashboard = () => {
 		} catch (err) {
 			console.log("Error in setting ", err);
 			alert("Error in setting false");
-			setLoading(false)
+			setLoading(false);
 		}
-	}
-	const handleRedeemSubscription = async ()=>{
+	};
+	const handleRedeemSubscription = async () => {
 		try {
-			setLoading(true)
-			const res = await redeemSubscription(sdk);	
+			setLoading(true);
+			const res = await redeemSubscription(sdk);
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in setting ", err);
 			alert("Error in setting false");
 			setLoading(false);
 		}
-	}
-	const handlePurchase = async ()=>{
+	};
+	const handlePurchase = async () => {
 		try {
-			setLoading(true)
-			const res = await createSubscription(sdk, address);	
+			setLoading(true);
+			const res = await createSubscription(sdk, address);
 			setLoading(false);
 		} catch (err) {
 			console.log("Error in purchasing ", err);
 			alert("Error in purchaing false");
 			setLoading(false);
 		}
-	}
+	};
 	return (
 		<>
 			<div className='dashboard-page h-screen'>
 				<NavBar />
 				{openModal && (
-					<form className='z-20 h-full w-full absolute flex backdrop-blur-md' onSubmit={handleSell}>
+					<form
+						className='z-20 h-full w-full absolute flex backdrop-blur-md'
+						onSubmit={handleSell}
+					>
 						<div className='flex w-fit m-auto items-center justify-center relative'>
 							<div className='absolute top-1 right-2 cursor-pointer'>
 								<AiFillCloseCircle
@@ -167,7 +180,7 @@ const Dashboard = () => {
 									radius='sm'
 									name='price'
 								/>
-								<Button className='w-full mt-5' color='primary' type="submit">
+								<Button className='w-full mt-5' color='primary' type='submit'>
 									Sell Subscription
 								</Button>
 							</div>
@@ -183,7 +196,7 @@ const Dashboard = () => {
 							</p> */}
 								<Card className='relative bg-secondary-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col'>
 									<div className='flex items-center mb-4 justify-between'>
-										<div className='flex'>
+										<div className='flex mr-20'>
 											<PiVaultFill className='text-4xl text-gray-100 mr-4' />
 											<h2 className='text-xl font-bold text-white'>
 												Role: {vault.role}
@@ -195,9 +208,17 @@ const Dashboard = () => {
 										</div>
 									</div>
 									<p className='text-gray-400'>Vault Address</p>
-									<p className='text-gray-300'>
-										{truncateMiddle(vault.vaultAddress)}
-									</p>
+									<div className='flex items-center'>
+										<p className='text-gray-300'>
+											{truncateMiddle(vault.vaultAddress)}
+										</p>
+										<BiCopy
+											onClick={() => {
+												navigator.clipboard.writeText(vault.vaultAddress);
+											}}
+											className='text-gray-400 cursor-pointer ml-2'
+										/>
+									</div>
 								</Card>
 							</>
 						) : (
@@ -230,65 +251,74 @@ const Dashboard = () => {
 								</p>
 							</Button>
 						)}
-						{
-							(subscription)  
-							? 
+						{subscription ? (
 							<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-10 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
-							<div className='flex items-center justify-between'>
-								<div>
-									<div className=' flex justify-between '>
-										<h2 className='text-md  text-white mr-10'>
-											<span className='text-white font-bold  mr-1'>
-												Subscription:
-											</span>
-											{subscription?.tokenId}
-										</h2>
-										<h2 className='flex items-center font-bold justify-center text-md  text-white'>
-											<span className='text-white  mr-1'>Sell: </span>
-											<Switch
-												isSelected={selected}
-												onValueChange={setSelected}
-												onChange={() => {
-													if (!selected) {
-														setOpenModal(true);
-													}
-												}}
-												color='success'
-												size='sm'
-											></Switch>
-										</h2>
-									</div>
-									<div className='flex justify-between mt-2'>
-										<p className='text-md  text-white mr-10'>
-											<span className='text-white font-bold mr-1'>Start: </span>
-											1/1/2021
-										</p>
-										<p className='text-md  text-white'>
-											<span className='text-white font-bold  mr-1'>End: </span>
-											1/1/2022
-										</p>
-									</div>
-									<Button className='w-full mt-2' onClick={handleRedeemSubscription}>Redeem</Button>
-								</div>
-							</div>
-						</Card>
-							: 
-								vault && <Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
 								<div className='flex items-center justify-between'>
 									<div>
-										<div className=' flex items-center justify-center mb-3 '>
-											<h2 className='text-2xl font-bold  text-white '>
-												Buy NFT Subscription
+										<div className=' flex justify-between '>
+											<h2 className='text-md  text-white mr-10'>
+												<span className='text-white font-bold  mr-1'>
+													Subscription:
+												</span>
+												{subscription?.tokenId}
 											</h2>
-											<p className='text-white'>Total price: 10 XDC</p>
+											<h2 className='flex items-center font-bold justify-center text-md  text-white'>
+												<span className='text-white  mr-1'>Sell: </span>
+												<Switch
+													isSelected={selected}
+													onValueChange={setSelected}
+													onChange={() => {
+														if (!selected) {
+															setOpenModal(true);
+														}
+													}}
+													color='success'
+													size='sm'
+												></Switch>
+											</h2>
 										</div>
-										<Button className='w-full' onClick={handlePurchase}>Buy Subscription</Button>
+										<div className='flex justify-between mt-2'>
+											<p className='text-md  text-white mr-10'>
+												<span className='text-white font-bold mr-1'>
+													Start:{" "}
+												</span>
+												1/1/2021
+											</p>
+											<p className='text-md  text-white'>
+												<span className='text-white font-bold  mr-1'>
+													End:{" "}
+												</span>
+												1/1/2022
+											</p>
+										</div>
+										<Button
+											className='w-full mt-2'
+											onClick={handleRedeemSubscription}
+										>
+											Redeem
+										</Button>
 									</div>
 								</div>
 							</Card>
-							
-							
-						}
+						) : (
+							vault && (
+								<Card className='relative bg-green-500 backdrop-blur-md bg-opacity-50 p-5 rounded-md shadow-md h-50 w-50 flex flex-col h-[11.2rem]'>
+									<div className='flex items-center justify-between'>
+										<div className='mt-5'>
+											<div className=' flex items-center justify-center mb-5 '>
+												<h2 className='text-2xl font-bold  text-white '>
+													Buy NFT Subscription
+												</h2>
+												<p className='text-white'>Total price: 10 XDC</p>
+											</div>
+											<Button className='w-full' onClick={handlePurchase}>
+												Buy Subscription
+											</Button>
+										</div>
+									</div>
+								</Card>
+							)
+						)}
 					</div>
 
 					{vault && (
@@ -354,9 +384,17 @@ const Dashboard = () => {
 								>
 									{/* Card content goes here */}
 									<div className='flex items-center justify-between'>
-										<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
-											Asset Address: {truncateMiddle(item.assetAddress)}
-										</h2>
+										<div className='flex items-center'>
+											<h2 className='text-2xl font-bold mb-1 text-secondary-500'>
+												Asset Address: {truncateMiddle(item.assetAddress)}
+											</h2>
+											<BiCopy
+												onClick={() => {
+													navigator.clipboard.writeText(item.assetAddress);
+												}}
+												className='text-gray-400 text-2xl cursor-pointer ml-2'
+											/>
+										</div>
 										<div>
 											<p className='text-blue-700 font-bold'>
 												<SiBlockchaindotcom className='inline-block mr-2' />

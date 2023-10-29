@@ -6,6 +6,19 @@ import { useEffect, useState } from "react";
 import { getAllVaults } from "../utils/vaults";
 import { useSDK } from "@thirdweb-dev/react";
 import Loading from "./Loading";
+import { BiCopy } from "react-icons/bi";
+
+const truncateMiddle = (str, startLength = 8, endLength = 4) => {
+	if (str.length <= startLength + endLength) {
+		return str;
+	}
+
+	const start = str.slice(0, startLength);
+	const end = str.slice(-endLength);
+
+	return `${start}....${end}`;
+};
+
 const DisplayVaults = () => {
 	const [vaults, setVaults] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -43,11 +56,22 @@ const DisplayVaults = () => {
 									</div>
 									<div className='flex items-center justify-center'>
 										<RiCoinsFill className='text-3xl text-green-500 mr-2' />
+										<p className='text-green-500'>TVL:</p>
 										<p className='text-green-500'>{vault.walletBalance}</p>
 									</div>
 								</div>
 								{/* <p className='text-gray-400'>Vault Address</p> */}
-								<p className='text-gray-300'>{vault.vaultAddress}</p>
+								<div className='flex items-center'>
+									<p className='text-gray-300'>
+										{truncateMiddle(vault.vaultAddress)}
+									</p>
+									<BiCopy
+										onClick={() => {
+											navigator.clipboard.writeText(vault.vaultAddress);
+										}}
+										className=' text-gray-300 ml-2 cursor-pointer'
+									/>
+								</div>
 							</Card>
 						))}
 					</div>
