@@ -1,10 +1,10 @@
-const {VITE_SUBSCRIPTION} = import.meta.env;
+
 import Subscription from '../artifacts/contracts/Subscription.sol/Subscription.json';
 import { ethers } from 'ethers';
 
 export const createSubscription = async (sdk, address)=>{
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const res = await contract.call('mintSubscription', [address], {value: ethers.utils.parseEther("10")});
         return res;
     } catch (err) {
@@ -50,7 +50,7 @@ export const getSubscriptionWithPosition = async (contract, position) =>{
 
 export const getAllSellingSubscriptions = async (sdk) =>{
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const result = await contract.call('getSubscriptionSellersLength')
         const subscriptionLength = parseInt(result);
         let allSubs = [];
@@ -67,7 +67,7 @@ export const getAllSellingSubscriptions = async (sdk) =>{
 
 export const purchaseSubscription = async (sdk, walletAddress, price) => {
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const res = await contract.call('purchase', [walletAddress], {value : ethers.utils.parseEther(price)});
         return res;
     } catch (err) {
@@ -78,7 +78,7 @@ export const purchaseSubscription = async (sdk, walletAddress, price) => {
 
 export const sellingOn = async (sdk, walletAddress, price, royaltyPercentage) => {
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const res = await contract.call('sellingOn', [walletAddress, parseInt(price), parseInt(royaltyPercentage)]);
         return true;
     } catch (err) {
@@ -89,7 +89,7 @@ export const sellingOn = async (sdk, walletAddress, price, royaltyPercentage) =>
 
 export const sellingOff = async (sdk, walletAddress) =>{
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const res = await contract.call('sellingOff', [walletAddress]);
         return true;
     } catch (err) {
@@ -100,7 +100,7 @@ export const sellingOff = async (sdk, walletAddress) =>{
 
 export const redeemSubscription  = async (sdk) => {
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const res = await contract.call('redeemRoyalty');
         return true
     } catch (err) {
@@ -111,7 +111,7 @@ export const redeemSubscription  = async (sdk) => {
 
 export const getSubscription = async (sdk, walletAddress) =>{
     try {
-        const contract = await sdk.getContract(VITE_SUBSCRIPTION, Subscription.abi);
+        const contract = await sdk.getContract('0xe2F30A9B05817F249e90aAE6292AE55E9998CB05', Subscription.abi);
         const subscription = await contract.call('infoOfVault',[walletAddress]);
         console.log(subscription.isSelling);
         if (parseInt(subscription.tokenId) != 0){

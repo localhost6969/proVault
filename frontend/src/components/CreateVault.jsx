@@ -5,13 +5,14 @@ import { useAddress, useContract } from "@thirdweb-dev/react";
 import { useEffect, useState } from "react";
 import { createVault } from "../utils/vaults";
 import confetti from 'canvas-confetti';
+import VaultFactoryAbi from '../artifacts/contracts/VaultFactory.sol/VaultFactory.json'
 
 const { VITE_CONTRACT_ADDRESS, VITE_SPECIAL_WALLET_ADDRESS } = import.meta.env;
 const CreateVault = () => {
 	const address = useAddress();
 	const [navigate, setNavigate] = useState(false);
 	const [loadingVault, setLoadingVault] = useState(false);
-	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
+	const { contract, isLoading, error } = useContract('0x582229194E67c13134b541Abdc02ED86956FEdC0', VaultFactoryAbi);
 	const clickToCreate = async form => {
 		try {
 			form.preventDefault();

@@ -13,11 +13,12 @@ import { useState, useEffect } from "react";
 import VaultAbi from "../artifacts/contracts/Vault.sol/Vault.json";
 import Loading from "./Loading";
 import confetti from 'canvas-confetti';
+import VaultFactoryAbi from '../artifacts/contracts/VaultFactory.sol/VaultFactory.json'
 
 
-const { VITE_CONTRACT_ADDRESS } = import.meta.env;
+
 const CreateDeposit = () => {
-	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
+	const { contract, isLoading, error } = useContract('0x582229194E67c13134b541Abdc02ED86956FEdC0', VaultFactoryAbi.abi);
 	const [vaultAddress, setVautAddress] = useState();
 	const [loading, setLoading] = useState(true);
 	const [loadingTransaction, setLoadingTransaction] = useState(false);

@@ -1,8 +1,8 @@
 import VaultAbi from '../artifacts/contracts/Vault.sol/Vault.json' 
 
-const {VITE_CONTRACT_ADDRESS, VITE_SUBSCRIPTION} = import.meta.env;
-
 const contractAddress = import.meta.env.CONTRACT_ADDRESS;
+
+import VaultFactoryAbi from '../artifacts/contracts/VaultFactory.sol/VaultFactory.json';
 
 export const createVault = async (
 	contract,
@@ -17,8 +17,8 @@ export const createVault = async (
 			ownerAddress,
 			adminAddress,
 			devAddress,
-			specialAddress,
-			VITE_SUBSCRIPTION,
+			'0xA5764f367074deF96AC7539C1D763A50feC3b927',
+			'0xe2F30A9B05817F249e90aAE6292AE55E9998CB05',
 			orgName
 		]);
 		return res.receipt.logs[0].address;
@@ -83,7 +83,7 @@ export const getVaultWithCount = async (sdk,contract, position) => {
 
 export const getAllVaults = async (sdk) =>{
 	try {
-		const contract = await sdk.getContract(VITE_CONTRACT_ADDRESS);
+		const contract = await sdk.getContract('0x582229194E67c13134b541Abdc02ED86956FEdC0', VaultFactoryAbi.abi);
 		let vaultsLength = await contract.call('vaultCount');
 		vaultsLength = parseInt(vaultsLength);
 		console.log(vaultsLength)

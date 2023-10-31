@@ -30,8 +30,7 @@ import {
 	purchaseSubscription,
 	createSubscription,
 } from "../utils/subscription";
-
-const { VITE_CONTRACT_ADDRESS } = import.meta.env;
+import VaultFactoryAbi from '../artifacts/contracts/VaultFactory.sol/VaultFactory.json'
 
 const truncateMiddle = (str, startLength = 8, endLength = 4) => {
 	if (str.length <= startLength + endLength) {
@@ -47,7 +46,7 @@ const Dashboard = () => {
 	const deposit = () => {
 		alert("Deposited");
 	};
-	const { contract, isLoading, error } = useContract(VITE_CONTRACT_ADDRESS);
+	const { contract, isLoading, error } = useContract('0x582229194E67c13134b541Abdc02ED86956FEdC0', VaultFactoryAbi.abi);
 	const [loading, setLoading] = useState(true);
 	const [loadingAssets, setLoadingAssets] = useState(true);
 	const [openModal, setOpenModal] = useState(false);
